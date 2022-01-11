@@ -1,0 +1,69 @@
+# Algorithms
+
+_[Template Library by Ross Smith](index.html)_
+
+```c++
+#include "rs-tl/algorithm.hpp"
+namespace RS::TL;
+```
+
+## Contents
+
+* TOC
+{:toc}
+
+## Differences
+
+```c++
+template <typename RandomAccessRange> struct DiffEntry {
+    using iterator = [range const iterator];
+    using subrange = Irange<iterator>;
+    subrange del;
+    subrange ins;
+};
+template <typename RandomAccessRange>
+    using DiffList = std::vector<DiffEntry<RandomAccessRange>>;
+```
+
+Supporting types.
+
+```c++
+template <typename RandomAccessRange>
+    DiffList<RandomAccessRange> diff(const RandomAccessRange& lhs,
+        const RandomAccessRange& rhs);
+template <typename RandomAccessRange, typename EqualityPredicate>
+    DiffList<RandomAccessRange> diff(const RandomAccessRange& lhs,
+        const RandomAccessRange& rhs, EqualityPredicate eq);
+```
+
+This is an implementation of the widely used diff algorithm, based on
+[Eugene Myers' 1986 paper](http://xmailserver.org/diff2.pdf).
+
+The return value is a list of diffs, each consisting of two pairs of
+iterators. The `del` member is a subrange of `lhs` indicating which elements
+have been removed, and the `ins` member is a subrange of `rhs` indicating
+which elements have been inserted in the same location. At least one subrange
+in each diff entry will be non-empty.
+
+Complexity: `O((m+n)*k)`, where `m` and `n` are the lengths of the input
+ranges and `k` is the number of differences.
+
+## Edit distance
+
+```c++
+template <typename ForwardRange1, typename ForwardRange2>
+    int edit_distance(const ForwardRange1& range1,
+        const ForwardRange2& range2);
+template <typename ForwardRange1, typename ForwardRange2, typename T>
+    T edit_distance(const ForwardRange1& range1,
+        const ForwardRange2& range2, T ins, T del, T sub);
+```
+
+These return the edit distance (Levenshtein distance) between two ranges,
+based on the number of insertions, deletions, and substitutions required to
+transform one range into the other. By default, each operation is given a
+weight of 1; optionally, explicit weights can be given to each operation. The
+weight type `T` must be an arithmetic type. Behaviour is undefined if any of
+the weights are negative.
+
+Complexity: `O(m*n)`, where `m` and `n` are the lengths of the input ranges.
