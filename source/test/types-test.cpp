@@ -7,6 +7,16 @@ using namespace RS::TL;
 
 void test_rs_tl_types_traits() {
 
+    TEST(is_iterator<std::string::iterator>);
+    TEST(is_iterator<std::string::const_iterator>);
+    TEST(is_iterator<std::vector<int>::iterator>);
+    TEST(is_iterator<std::vector<int>::const_iterator>);
+    TEST(is_iterator<std::vector<std::string>::iterator>);
+    TEST(is_iterator<std::vector<std::string>::const_iterator>);
+    TEST(! is_iterator<std::string>);
+    TEST(! is_iterator<int>);
+    TEST(! is_iterator<void>);
+
     TEST(is_range<std::string>);
     TEST(is_range<std::vector<int>>);
     TEST(is_range<std::vector<std::string>>);

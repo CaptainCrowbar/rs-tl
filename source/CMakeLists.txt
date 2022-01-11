@@ -59,6 +59,10 @@ add_executable(${unittest}
     test/algorithm-test.cpp
     test/binary-test.cpp
     test/guard-test.cpp
+    test/bounded-array-test.cpp
+    test/compact-array-test.cpp
+    test/index-table-test.cpp
+    test/mirror-map-test.cpp
     test/stack-test.cpp
     test/topological-order-test.cpp
     test/version-test.cpp

@@ -2,9 +2,13 @@
 
 #include "rs-tl/algorithm.hpp"
 #include "rs-tl/binary.hpp"
+#include "rs-tl/bounded-array.hpp"
+#include "rs-tl/compact-array.hpp"
 #include "rs-tl/guard.hpp"
+#include "rs-tl/index-table.hpp"
 #include "rs-tl/iterator.hpp"
 #include "rs-tl/meta.hpp"
+#include "rs-tl/mirror-map.hpp"
 #include "rs-tl/stack.hpp"
 #include "rs-tl/topological-order.hpp"
 #include "rs-tl/types.hpp"

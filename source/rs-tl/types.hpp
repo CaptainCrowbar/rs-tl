@@ -24,6 +24,8 @@ namespace RS::TL {
 
     namespace Detail {
 
+        template <typename T, typename = void> struct HasIteratorCategory: std::false_type {};
+        template <typename T> struct HasIteratorCategory<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>: std::true_type {};
         template <typename T, typename = void> struct HasAdlBeginFunction: std::false_type {};
         template <typename T> struct HasAdlBeginFunction<T, std::void_t<decltype(begin(std::declval<const T&>()))>>: std::true_type {};
         template <typename T, typename = void> struct HasAdlEndFunction: std::false_type {};
@@ -48,6 +50,7 @@ namespace RS::TL {
 
     }
 
+    template <typename T> constexpr bool is_iterator = Detail::HasIteratorCategory<T>::value;
     template <typename T> constexpr bool is_range = (Detail::HasAdlBeginFunction<T>::value && Detail::HasAdlEndFunction<T>::value)
         || (Detail::HasStdBeginFunction<T>::value && Detail::HasStdEndFunction<T>::value);
 

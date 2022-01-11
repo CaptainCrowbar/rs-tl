@@ -62,6 +62,31 @@ int main(int argc, char** argv) {
     // guard-test.cpp
     UNIT_TEST(rs_tl_scope_guards)
 
+    // bounded-array-test.cpp
+    UNIT_TEST(rs_tl_bounded_array_construction)
+    UNIT_TEST(rs_tl_bounded_array_capacity)
+    UNIT_TEST(rs_tl_bounded_array_insertion)
+    UNIT_TEST(rs_tl_bounded_array_accounting)
+    UNIT_TEST(rs_tl_bounded_array_keys)
+
+    // compact-array-test.cpp
+    UNIT_TEST(rs_tl_compact_array_construction)
+    UNIT_TEST(rs_tl_compact_array_capacity)
+    UNIT_TEST(rs_tl_compact_array_insertion)
+    UNIT_TEST(rs_tl_compact_array_accounting)
+    UNIT_TEST(rs_tl_compact_array_keys)
+
+    // index-table-test.cpp
+    UNIT_TEST(rs_tl_index_table_classes)
+
+    // mirror-map-test.cpp
+    UNIT_TEST(rs_tl_mirror_map_construct)
+    UNIT_TEST(rs_tl_mirror_map_iterators)
+    UNIT_TEST(rs_tl_mirror_map_insert)
+    UNIT_TEST(rs_tl_mirror_map_erase)
+    UNIT_TEST(rs_tl_mirror_map_search)
+    UNIT_TEST(rs_tl_mirror_map_duplicates)
+
     // stack-test.cpp
     UNIT_TEST(rs_tl_stack)
 

@@ -90,8 +90,8 @@ namespace RS::TL {
 
     template <typename T, typename CV>
     struct RandomAccessIterator:
-    BidirectionalIterator<T, CV>,
-    TotalOrder<T> {
+    BidirectionalIterator<T, CV> {
+        // Inheriting from TotalOrder here would lead to function resolution collision for operator!=
         using iterator_category = std::random_access_iterator_tag;
         CV& operator[](ptrdiff_t i) const noexcept { T t = static_cast<const T&>(*this); t += i; return *t; }
         friend T& operator++(T& t) { return t += 1; }
@@ -102,6 +102,9 @@ namespace RS::TL {
         friend T operator-(const T& a, ptrdiff_t b) { T t = a; return t -= b; }
         friend bool operator==(const T& a, const T& b) noexcept { return a - b == 0; }
         friend bool operator<(const T& a, const T& b) noexcept { return a - b < 0; }
+        friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
+        friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }
+        friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
     };
 
     // Iterator classes

@@ -31,6 +31,10 @@ for this library's unit tests.
 * [Metaprogramming utilities](meta.html)
 * [Scope guards](guard.html)
 * Containers
+    * [Bounded array on the stack](bounded-array.html)
+    * [Compact array optimized for small size](compact-array.html)
+    * [Indexed table with multiple keys](index-table.html)
+    * [Mirror map with two-way lookup](mirror-map.html)
     * [Stack](stack.html)
     * [Topological order](topological-order.html)
 * [Version information](version.html)

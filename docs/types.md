@@ -37,6 +37,12 @@ Allows compile time failure in an `if constexpr` branch.
 ## Type traits
 
 ```c++
+template <typename T> constexpr bool is_iterator;
+```
+
+True if `T` is an iterator.
+
+```c++
 template <typename T> constexpr bool is_range;
 ```
 
