@@ -12,7 +12,35 @@ namespace RS::TL;
 * TOC
 {:toc}
 
-## Differences
+## Container algorithms
+
+```c++
+template <typename Container, typename T>
+    void remove_in(Container& con, const T& t);
+template <typename Container, typename Predicate>
+    void remove_in_if(Container& con, Predicate p);
+template <typename Container, typename Predicate>
+    void remove_in_if_not(Container& con, Predicate p);
+template <typename Container>
+    void unique_in(Container& con);
+template <typename Container, typename BinaryPredicate>
+    void unique_in(Container& con, BinaryPredicate eq);
+template <typename Container>
+    void sort_unique_in(Container& con);
+template <typename Container, typename BinaryPredicate>
+    void sort_unique_in(Container& con, BinaryPredicate cmp);
+```
+
+These carry out the same algorithms as the similarly named STL functions,
+except that unwanted elements are removed from the container rather than
+shuffled to the end. The `sort_unique_in()` functions perform a sort followed
+by removing equivalent elements from the container; like `std::sort()`, its
+predicate has less-than semantics, where that of `unique_in()`, like
+`std::unique()`, has equality semantics.
+
+## Other algorithms
+
+### Difference
 
 ```c++
 template <typename RandomAccessRange> struct DiffEntry {
@@ -48,7 +76,7 @@ in each diff entry will be non-empty.
 Complexity: `O((m+n)*k)`, where `m` and `n` are the lengths of the input
 ranges and `k` is the number of differences.
 
-## Edit distance
+### Edit distance
 
 ```c++
 template <typename ForwardRange1, typename ForwardRange2>

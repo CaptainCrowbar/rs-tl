@@ -10,7 +10,6 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_types_traits)
 
     // iterator-test.cpp
-    UNIT_TEST(rs_tl_iterator_container_algorithms)
     UNIT_TEST(rs_tl_iterator_append_overwrite)
 
     // meta-test.cpp
@@ -52,6 +51,7 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_meta_length_of)
 
     // algorithm-test.cpp
+    UNIT_TEST(rs_tl_algorithm_container_algorithms)
     UNIT_TEST(rs_tl_algorithm_diff)
     UNIT_TEST(rs_tl_algorithm_edit_distance)
 

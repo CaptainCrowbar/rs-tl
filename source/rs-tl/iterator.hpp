@@ -1,53 +1,11 @@
 #pragma once
 
 #include "rs-tl/types.hpp"
-#include <algorithm>
 #include <iterator>
 #include <type_traits>
 #include <utility>
 
 namespace RS::TL {
-
-    // Container algorithms
-
-    template <typename Container, typename T>
-    void remove_in(Container& con, const T& t) {
-        con.erase(std::remove(con.begin(), con.end(), t), con.end());
-    }
-
-    template <typename Container, typename Predicate>
-    void remove_in_if(Container& con, Predicate p) {
-        con.erase(std::remove_if(con.begin(), con.end(), p), con.end());
-    }
-
-    template <typename Container, typename Predicate>
-    void remove_in_if_not(Container& con, Predicate p) {
-        using T = std::decay_t<decltype(*con.begin())>;
-        con.erase(std::remove_if(con.begin(), con.end(), [p] (const T& x) { return ! p(x); }), con.end());
-    }
-
-    template <typename Container>
-    void unique_in(Container& con) {
-        con.erase(std::unique(con.begin(), con.end()), con.end());
-    }
-
-    template <typename Container, typename BinaryPredicate>
-    void unique_in(Container& con, BinaryPredicate eq) {
-        con.erase(std::unique(con.begin(), con.end(), eq), con.end());
-    }
-
-    template <typename Container>
-    void sort_unique_in(Container& con) {
-        std::sort(con.begin(), con.end());
-        unique_in(con);
-    }
-
-    template <typename Container, typename BinaryPredicate>
-    void sort_unique_in(Container& con, BinaryPredicate cmp) {
-        using T = std::decay_t<decltype(*con.begin())>;
-        std::sort(con.begin(), con.end(), cmp);
-        unique_in(con, [cmp] (const T& a, const T& b) { return ! cmp(a, b); });
-    }
 
     // Mixin classes
 
