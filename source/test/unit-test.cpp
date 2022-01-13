@@ -104,6 +104,9 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_topological_order)
     UNIT_TEST(rs_tl_topological_order_reverse)
 
+    // uuid-test.cpp
+    UNIT_TEST(rs_tl_uuid)
+
     // version-test.cpp
     UNIT_TEST(rs_tl_version)
 

@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.18)
 # and propagate the new version to version.hpp.
 
 project(rs-tl
-    VERSION 0.1.6
+    VERSION 0.1.7
     LANGUAGES CXX
 )
 
@@ -66,6 +66,7 @@ add_executable(${unittest}
     test/mirror-map-test.cpp
     test/stack-test.cpp
     test/topological-order-test.cpp
+    test/uuid-test.cpp
     test/version-test.cpp
     test/unit-test.cpp
 )

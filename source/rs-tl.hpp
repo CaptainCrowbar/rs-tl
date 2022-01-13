@@ -14,4 +14,5 @@
 #include "rs-tl/thread.hpp"
 #include "rs-tl/topological-order.hpp"
 #include "rs-tl/types.hpp"
+#include "rs-tl/uuid.hpp"
 #include "rs-tl/version.hpp"
