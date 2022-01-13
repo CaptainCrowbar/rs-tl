@@ -1,10 +1,15 @@
 #pragma once
 
 #include <iterator>
+#include <string>
 #include <type_traits>
 #include <utility>
 
 namespace RS::TL {
+
+    // Constants
+
+    constexpr size_t npos = std::string::npos;
 
     // Mixin classes
 

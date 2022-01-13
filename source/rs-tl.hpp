@@ -4,6 +4,7 @@
 #include "rs-tl/binary.hpp"
 #include "rs-tl/bounded-array.hpp"
 #include "rs-tl/compact-array.hpp"
+#include "rs-tl/fixed-binary.hpp"
 #include "rs-tl/guard.hpp"
 #include "rs-tl/index-table.hpp"
 #include "rs-tl/iterator.hpp"

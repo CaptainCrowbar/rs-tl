@@ -59,6 +59,16 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_binary_byte_order)
     UNIT_TEST(rs_tl_binary_birwise_operations)
 
+    // fixed-binary-test.cpp
+    UNIT_TEST(rs_tl_fixed_binary_implementation_selection)
+    UNIT_TEST(rs_tl_fixed_binary_small_binary_5)
+    UNIT_TEST(rs_tl_fixed_binary_small_binary_35)
+    UNIT_TEST(rs_tl_fixed_binary_large_binary_35)
+    UNIT_TEST(rs_tl_fixed_binary_large_binary_100)
+    UNIT_TEST(rs_tl_fixed_binary_type_conversions)
+    UNIT_TEST(rs_tl_fixed_binary_string_parsing)
+    UNIT_TEST(rs_tl_fixed_binary_hash_set)
+
     // guard-test.cpp
     UNIT_TEST(rs_tl_scope_guards)
 

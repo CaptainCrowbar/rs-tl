@@ -12,6 +12,14 @@ namespace RS::TL;
 * TOC
 {:toc}
 
+## Constants
+
+```c++
+constexpr size_t npos = std::string::npos;
+```
+
+Imported for convenience.
+
 ## Mixin classes
 
 These are intended to be used as base classes, following the well known CRTP
