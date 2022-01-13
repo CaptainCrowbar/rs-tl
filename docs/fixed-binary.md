@@ -24,6 +24,15 @@ documented as taking a `Binary` argument by value, usually the `LargeBinary`
 version actually takes its argument by reference).
 
 ```c++
+using Uint128 = Binary<128>;
+using Uint256 = Binary<256>;
+using Uint512 = Binary<512>;
+using Uint1024 = Binary<1024>;
+```
+
+Defined for convenience
+
+```c++
 static constexpr size_t Binary::bits = N;
 static constexpr size_t Binary::bytes = [total bytes in representation];
 static constexpr size_t Binary::hex_digits = [maximum number of hex digits in value];

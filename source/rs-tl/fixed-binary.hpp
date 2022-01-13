@@ -20,6 +20,11 @@ namespace RS::TL {
     template <size_t N> class LargeBinary;
     template <size_t N> using Binary = std::conditional_t<(N <= 64), SmallBinary<N>, LargeBinary<N>>;
 
+    using Uint128 = Binary<128>;
+    using Uint256 = Binary<256>;
+    using Uint512 = Binary<512>;
+    using Uint1024 = Binary<1024>;
+
     namespace Detail {
 
         template <typename T>
