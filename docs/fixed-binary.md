@@ -47,21 +47,21 @@ constexpr Binary::Binary() noexcept;
 The default constructor sets the value to zero.
 
 ```c++
-Binary::Binary(uint64_t x) noexcept;
+constexpr Binary::Binary(uint64_t x) noexcept;
 ```
 
 Constructor from a primitive unsigned integer.
 
 ```c++
-template <size_t M> explicit SmallBinary::SmallBinary(SmallBinary<M> x) noexcept;
-template <size_t M> explicit LargeBinary::LargeBinary(SmallBinary<M> x) noexcept;
-template <size_t M> explicit LargeBinary::LargeBinary(const LargeBinary<M>& x) noexcept;
+template <size_t M> constexpr explicit SmallBinary::SmallBinary(SmallBinary<M> x) noexcept;
+template <size_t M> constexpr explicit LargeBinary::LargeBinary(SmallBinary<M> x) noexcept;
+template <size_t M> constexpr explicit LargeBinary::LargeBinary(const LargeBinary<M>& x) noexcept;
 ```
 
 Constructor from another `Binary` object.
 
 ```c++
-Binary::Binary(std::initializer_list<uint64_t> init) noexcept;
+constexpr Binary::Binary(std::initializer_list<uint64_t> init) noexcept;
 ```
 
 Constructor from a list of 64-bit integers, in big-endian order. Any excess
@@ -74,11 +74,11 @@ explicit Binary::Binary(const std::string& str);
 The string constructor calls `parse_dec()` and follows the same rules.
 
 ```c++
-Binary::Binary(const Binary& x) noexcept;
-Binary::Binary(Binary&& x) noexcept;
-Binary::~Binary() noexcept;
-Binary& Binary::operator=(const Binary& x) noexcept;
-Binary& Binary::operator=(Binary&& x) noexcept;
+constexpr Binary::Binary(const Binary& x) noexcept;
+constexpr Binary::Binary(Binary&& x) noexcept;
+constexpr Binary::~Binary() noexcept;
+constexpr Binary& Binary::operator=(const Binary& x) noexcept;
+constexpr Binary& Binary::operator=(Binary&& x) noexcept;
 ```
 
 Other life cycle operations.
@@ -98,13 +98,13 @@ the number of digits needed, with no leading zeroes (unless the value is
 zero).
 
 ```c++
-void Binary::clear() noexcept;
+constexpr void Binary::clear() noexcept;
 ```
 
 Sets the value to zero.
 
 ```c++
-int Binary::compare(Binary y) const noexcept;
+constexpr int Binary::compare(Binary y) const noexcept;
 ```
 
 Three-way comparison, returning -1 if `*this<y`, 0 if `*this==y`, or 1 if
@@ -119,34 +119,34 @@ Pointers to the internal representation, which will consist of a number of
 bytes equal to the `bytes` constant, in little endian order.
 
 ```c++
-template <typename T> bool Binary::fits_in() const noexcept;
+template <typename T> constexpr bool Binary::fits_in() const noexcept;
 ```
 
 True if the current value of the `Binary` will fit in a `T` without loss of
 information. `T` must be a primitive arithmetic type.
 
 ```c++
-size_t Binary::hash() const noexcept;
+constexpr size_t Binary::hash() const noexcept;
 class std::hash<Binary<T>>;
 ```
 
 Hash function.
 
 ```c++
-size_t Binary::significant_bits() const noexcept;
+constexpr size_t Binary::significant_bits() const noexcept;
 ```
 
 Returns the number of significant bits in the value.
 
 ```c++
-explicit Binary::operator bool() const noexcept;
+constexpr explicit Binary::operator bool() const noexcept;
 ```
 
 True if the value is not zero.
 
 ```c++
-template <typename T> explicit Binary::operator T() const noexcept;
-template <size_t M> explicit LargeBinary::operator SmallBinary<M>() const noexcept;
+template <typename T> constexpr explicit Binary::operator T() const noexcept;
+template <size_t M> constexpr explicit LargeBinary::operator SmallBinary<M>() const noexcept;
 ```
 
 Converts a fixed binary number into a standard integer or floating point type,
