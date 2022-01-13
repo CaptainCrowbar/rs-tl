@@ -61,7 +61,7 @@ template <size_t M> explicit LargeBinary::LargeBinary(const LargeBinary<M>& x) n
 Constructor from another `Binary` object.
 
 ```c++
-explicit Binary::Binary(std::initializer_list<uint64_t> init) noexcept;
+Binary::Binary(std::initializer_list<uint64_t> init) noexcept;
 ```
 
 Constructor from a list of 64-bit integers, in big-endian order. Any excess

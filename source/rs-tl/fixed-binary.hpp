@@ -103,7 +103,7 @@ namespace RS::TL {
         constexpr SmallBinary() noexcept: value_(0) {}
         SmallBinary(uint64_t x) noexcept: value_(x & mask) {}
         template <size_t M> explicit SmallBinary(SmallBinary<M> x) noexcept: SmallBinary(uint64_t(x)) {}
-        explicit SmallBinary(std::initializer_list<uint64_t> init) noexcept: value_(init.size() ? *init.begin() & mask : 0) {}
+        SmallBinary(std::initializer_list<uint64_t> init) noexcept: value_(init.size() ? *init.begin() & mask : 0) {}
         explicit SmallBinary(const std::string& str) { *this = parse_dec(str); }
 
         std::string bin() const { return Detail::to_binary(value_, N); }
@@ -198,7 +198,7 @@ namespace RS::TL {
 
         constexpr LargeBinary() noexcept {}
         LargeBinary(uint64_t x) noexcept;
-        explicit LargeBinary(std::initializer_list<uint64_t> init) noexcept;
+        LargeBinary(std::initializer_list<uint64_t> init) noexcept;
         explicit LargeBinary(const std::string& str) { *this = parse_dec(str); }
         template <size_t M> explicit LargeBinary(SmallBinary<M> x) noexcept: LargeBinary(uint64_t(x)) {}
         template <size_t M> explicit LargeBinary(const LargeBinary<M>& x) noexcept;
