@@ -31,6 +31,7 @@ for this library's unit tests.
 * [Iterator types and algorithms](iterator.html)
 * [Metaprogramming utilities](meta.html)
 * [Scope guards](guard.html)
+* [Thread](thread.html)
 * Containers
     * [Bounded array on the stack](bounded-array.html)
     * [Compact array optimized for small size](compact-array.html)
