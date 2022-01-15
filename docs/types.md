@@ -63,3 +63,21 @@ template <typename T> using RangeValue = [value type];
 ```
 
 The iterator and value types of a range, or `void` if `T` is not a range.
+
+```c++
+template <typename T> constexpr bool is_input_iterator;
+template <typename T> constexpr bool is_input_range;
+template <typename T> constexpr bool is_output_iterator;
+template <typename T> constexpr bool is_output_range;
+template <typename T> constexpr bool is_forward_iterator;
+template <typename T> constexpr bool is_forward_range;
+template <typename T> constexpr bool is_bidirectional_iterator;
+template <typename T> constexpr bool is_bidirectional_range;
+template <typename T> constexpr bool is_random_access_iterator;
+template <typename T> constexpr bool is_random_access_range;
+```
+
+These indicate whether an iterator type, or the iterator type of a range,
+meets the requirements for one of the standard iterator concepts. Each of
+these will be true if the iterator's category is at least equal to the named
+category.

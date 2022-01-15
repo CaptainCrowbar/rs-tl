@@ -8,6 +8,8 @@ int main(int argc, char** argv) {
 
     // types-test.cpp
     UNIT_TEST(rs_tl_types_traits)
+    UNIT_TEST(rs_tl_types_iterator_category)
+    UNIT_TEST(rs_tl_types_range_category)
 
     // iterator-test.cpp
     UNIT_TEST(rs_tl_iterator_append_overwrite)

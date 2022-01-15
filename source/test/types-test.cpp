@@ -1,5 +1,8 @@
 #include "rs-tl/types.hpp"
 #include "rs-unit-test.hpp"
+#include <forward_list>
+#include <iterator>
+#include <list>
 #include <string>
 #include <vector>
 
@@ -39,5 +42,103 @@ void test_rs_tl_types_traits() {
     TEST_TYPE(RangeValue<int>,                                void);
     TEST_TYPE(RangeIterator<void>,                            void);
     TEST_TYPE(RangeValue<void>,                               void);
+
+}
+
+void test_rs_tl_types_iterator_category() {
+
+    TEST(! is_input_iterator<void>);
+    TEST(! is_output_iterator<void>);
+    TEST(! is_forward_iterator<void>);
+    TEST(! is_bidirectional_iterator<void>);
+    TEST(! is_random_access_iterator<void>);
+
+    TEST(! is_input_iterator<int>);
+    TEST(! is_output_iterator<int>);
+    TEST(! is_forward_iterator<int>);
+    TEST(! is_bidirectional_iterator<int>);
+    TEST(! is_random_access_iterator<int>);
+
+    TEST(! is_input_iterator<void*>);
+    TEST(! is_output_iterator<void*>);
+    TEST(! is_forward_iterator<void*>);
+    TEST(! is_bidirectional_iterator<void*>);
+    TEST(! is_random_access_iterator<void*>);
+
+    TEST(is_input_iterator<int*>);
+    TEST(is_output_iterator<int*>);
+    TEST(is_forward_iterator<int*>);
+    TEST(is_bidirectional_iterator<int*>);
+    TEST(is_random_access_iterator<int*>);
+
+    TEST(is_input_iterator<std::string::iterator>);
+    TEST(is_output_iterator<std::string::iterator>);
+    TEST(is_forward_iterator<std::string::iterator>);
+    TEST(is_bidirectional_iterator<std::string::iterator>);
+    TEST(is_random_access_iterator<std::string::iterator>);
+
+    TEST(is_input_iterator<std::vector<int>::iterator>);
+    TEST(is_output_iterator<std::vector<int>::iterator>);
+    TEST(is_forward_iterator<std::vector<int>::iterator>);
+    TEST(is_bidirectional_iterator<std::vector<int>::iterator>);
+    TEST(is_random_access_iterator<std::vector<int>::iterator>);
+
+    TEST(is_input_iterator<std::forward_list<int>::iterator>);
+    TEST(is_output_iterator<std::forward_list<int>::iterator>);
+    TEST(is_forward_iterator<std::forward_list<int>::iterator>);
+    TEST(! is_bidirectional_iterator<std::forward_list<int>::iterator>);
+    TEST(! is_random_access_iterator<std::forward_list<int>::iterator>);
+
+    TEST(is_input_iterator<std::list<int>::iterator>);
+    TEST(is_output_iterator<std::list<int>::iterator>);
+    TEST(is_forward_iterator<std::list<int>::iterator>);
+    TEST(is_bidirectional_iterator<std::list<int>::iterator>);
+    TEST(! is_random_access_iterator<std::list<int>::iterator>);
+
+    TEST(is_input_iterator<std::istream_iterator<int>>);
+    TEST(! is_output_iterator<std::istream_iterator<int>>);
+    TEST(! is_forward_iterator<std::istream_iterator<int>>);
+    TEST(! is_bidirectional_iterator<std::istream_iterator<int>>);
+    TEST(! is_random_access_iterator<std::istream_iterator<int>>);
+
+    TEST(! is_input_iterator<std::ostream_iterator<int>>);
+    TEST(is_output_iterator<std::ostream_iterator<int>>);
+    TEST(! is_forward_iterator<std::ostream_iterator<int>>);
+    TEST(! is_bidirectional_iterator<std::ostream_iterator<int>>);
+    TEST(! is_random_access_iterator<std::ostream_iterator<int>>);
+
+}
+
+void test_rs_tl_types_range_category() {
+
+    TEST(! is_input_range<void>);
+    TEST(! is_output_range<void>);
+    TEST(! is_forward_range<void>);
+    TEST(! is_bidirectional_range<void>);
+    TEST(! is_random_access_range<void>);
+
+    TEST(is_input_range<std::string>);
+    TEST(is_output_range<std::string>);
+    TEST(is_forward_range<std::string>);
+    TEST(is_bidirectional_range<std::string>);
+    TEST(is_random_access_range<std::string>);
+
+    TEST(is_input_range<std::vector<int>>);
+    TEST(is_output_range<std::vector<int>>);
+    TEST(is_forward_range<std::vector<int>>);
+    TEST(is_bidirectional_range<std::vector<int>>);
+    TEST(is_random_access_range<std::vector<int>>);
+
+    TEST(is_input_range<std::forward_list<int>>);
+    TEST(is_output_range<std::forward_list<int>>);
+    TEST(is_forward_range<std::forward_list<int>>);
+    TEST(! is_bidirectional_range<std::forward_list<int>>);
+    TEST(! is_random_access_range<std::forward_list<int>>);
+
+    TEST(is_input_range<std::list<int>>);
+    TEST(is_output_range<std::list<int>>);
+    TEST(is_forward_range<std::list<int>>);
+    TEST(is_bidirectional_range<std::list<int>>);
+    TEST(! is_random_access_range<std::list<int>>);
 
 }

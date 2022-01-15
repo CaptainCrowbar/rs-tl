@@ -112,4 +112,29 @@ namespace RS::TL {
         return {p.first, p.second};
     }
 
+    template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset) {
+        using std::begin;
+        using std::end;
+        auto i = begin(range);
+        auto j = end(range);
+        if (offset >= 0) {
+            for (; offset > 0 && i != j; ++i, --offset) {}
+        } else {
+            auto k = j;
+            for (; offset < 0 && k != i; --k, ++offset) {}
+            i = k;
+        }
+        return {i,j};
+    }
+
+    template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset1, int offset2) {
+        // TODO
+        (void)range;
+        (void)offset1;
+        (void)offset2;
+        return {};
+    }
+
 }
