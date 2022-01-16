@@ -73,3 +73,23 @@ template <typename Iterator> Irange<Iterator>
 ```
 
 This turns a pair of iterators into a usable range.
+
+```c++
+template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset);
+template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset,
+        int offset2);
+```
+
+Return a range representing a subset of the original range. If `offset` is
+positive or zero, it's counted from the start of the range; if it's negative,
+it's counted backwards from the end of the range. If `offset2` is positive or
+zero, it's counted from the `offset` position; if it's negative, it's counted
+backwards from the end of the range. If an offset would be past the end of
+the original range, the subrange is truncated to the original range. If a
+negative offset would reach a position before the beginning of the subrange,
+an empty subrange is returned.
+
+Behaviour is undefined if either offset is negative and the iterator type is
+not at least bidirectional.

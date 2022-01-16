@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
 
     // iterator-test.cpp
     UNIT_TEST(rs_tl_iterator_append_overwrite)
+    UNIT_TEST(rs_tl_iterator_subrange)
 
     // meta-test.cpp
     UNIT_TEST(rs_tl_meta_append)

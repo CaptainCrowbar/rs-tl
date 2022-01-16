@@ -121,20 +121,20 @@ namespace RS::TL {
         if (offset >= 0) {
             for (; offset > 0 && i != j; ++i, --offset) {}
         } else {
-            auto k = j;
-            for (; offset < 0 && k != i; --k, ++offset) {}
-            i = k;
+            if constexpr (is_bidirectional_range<Range>) {
+                auto k = j;
+                for (; offset < 0 && k != i; --k, ++offset) {}
+                i = k;
+            }
         }
-        return {i,j};
+        return {i, j};
     }
 
     template <typename Range>
-    Irange<RangeIterator<Range>> subrange(Range& range, int offset1, int offset2) {
-        // TODO
-        (void)range;
-        (void)offset1;
-        (void)offset2;
-        return {};
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset, int offset2) {
+        auto sub1 = subrange(range, offset);
+        auto sub2 = subrange(sub1, offset2);
+        return {sub1.first, sub2.first};
     }
 
 }
