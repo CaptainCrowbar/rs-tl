@@ -3,29 +3,48 @@
 #include <forward_list>
 #include <iterator>
 #include <list>
+#include <map>
 #include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 using namespace RS::TL;
 
 void test_rs_tl_types_traits() {
 
+    TEST(! is_iterator<void>);
+    TEST(! is_iterator<int>);
+    TEST(! is_iterator<std::string>);
     TEST(is_iterator<std::string::iterator>);
     TEST(is_iterator<std::string::const_iterator>);
     TEST(is_iterator<std::vector<int>::iterator>);
     TEST(is_iterator<std::vector<int>::const_iterator>);
     TEST(is_iterator<std::vector<std::string>::iterator>);
     TEST(is_iterator<std::vector<std::string>::const_iterator>);
-    TEST(! is_iterator<std::string>);
-    TEST(! is_iterator<int>);
-    TEST(! is_iterator<void>);
 
-    TEST(is_range<std::string>);
-    TEST(is_range<std::vector<int>>);
-    TEST(is_range<std::vector<std::string>>);
-    TEST(! is_range<int>);
-    TEST(! is_range<void>);
+    TEST((! is_range<void>));
+    TEST((! is_range<int>));
+    TEST((is_range<std::string>));
+    TEST((is_range<std::vector<int>>));
+    TEST((is_range<std::vector<std::string>>));
+    TEST((is_range<std::vector<std::pair<int, std::string>>>));
+    TEST((is_range<std::map<int, std::string>>));
+    TEST((is_range<std::unordered_map<int, std::string>>));
 
+    TEST((! is_maplike_range<void>));
+    TEST((! is_maplike_range<int>));
+    TEST((! is_maplike_range<std::string>));
+    TEST((! is_maplike_range<std::vector<int>>));
+    TEST((! is_maplike_range<std::vector<std::string>>));
+    TEST((is_maplike_range<std::vector<std::pair<int, std::string>>>));
+    TEST((is_maplike_range<std::map<int, std::string>>));
+    TEST((is_maplike_range<std::unordered_map<int, std::string>>));
+
+    TEST_TYPE(RangeIterator<void>,                            void);
+    TEST_TYPE(RangeValue<void>,                               void);
+    TEST_TYPE(RangeIterator<int>,                             void);
+    TEST_TYPE(RangeValue<int>,                                void);
     TEST_TYPE(RangeIterator<std::string>,                     std::string::iterator);
     TEST_TYPE(RangeIterator<const std::string>,               std::string::const_iterator);
     TEST_TYPE(RangeValue<std::string>,                        char);
@@ -38,10 +57,6 @@ void test_rs_tl_types_traits() {
     TEST_TYPE(RangeIterator<const std::vector<std::string>>,  std::vector<std::string>::const_iterator);
     TEST_TYPE(RangeValue<std::vector<std::string>>,           std::string);
     TEST_TYPE(RangeValue<const std::vector<std::string>>,     std::string);
-    TEST_TYPE(RangeIterator<int>,                             void);
-    TEST_TYPE(RangeValue<int>,                                void);
-    TEST_TYPE(RangeIterator<void>,                            void);
-    TEST_TYPE(RangeValue<void>,                               void);
 
 }
 

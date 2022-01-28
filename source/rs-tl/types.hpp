@@ -59,6 +59,12 @@ namespace RS::TL {
         template <typename T, bool IsIterator = HasIteratorCategory<T>::value> struct AltIteratorCategory { using type = void; };
         template <typename T> struct AltIteratorCategory<T, true> { using type = typename std::iterator_traits<T>::iterator_category; };
 
+        template <typename T, typename = void> struct HasFirstMember: std::false_type {};
+        template <typename T> struct HasFirstMember<T, std::void_t<decltype(std::declval<T>().first)>>: std::true_type {};
+        template <typename T, typename = void> struct HasSecondMember: std::false_type {};
+        template <typename T> struct HasSecondMember<T, std::void_t<decltype(std::declval<T>().second)>>: std::true_type {};
+        template <typename T> constexpr bool is_pairlike = HasFirstMember<T>::value && HasSecondMember<T>::value;
+
     }
 
     template <typename T> constexpr bool is_iterator = Detail::HasIteratorCategory<T>::value;
@@ -98,5 +104,7 @@ namespace RS::TL {
     template <typename T> constexpr bool is_forward_range = is_forward_iterator<RangeIterator<T>>;
     template <typename T> constexpr bool is_bidirectional_range = is_bidirectional_iterator<RangeIterator<T>>;
     template <typename T> constexpr bool is_random_access_range = is_random_access_iterator<RangeIterator<T>>;
+
+    template <typename T> constexpr bool is_maplike_range = is_range<T> && Detail::is_pairlike<RangeValue<T>>;
 
 }

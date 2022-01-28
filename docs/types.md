@@ -58,6 +58,13 @@ True if `T` is a range, defined as having `begin(T)` and `end(T)` functions
 that can be found either by ADL or in `namespace std`.
 
 ```c++
+template <typename T> constexpr bool is_maplike_range;
+```
+
+True if `T` is a range, and its value type has `first` and `second` data
+members.
+
+```c++
 template <typename T> using RangeIterator = [iterator type];
 template <typename T> using RangeValue = [value type];
 ```

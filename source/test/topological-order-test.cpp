@@ -5,6 +5,7 @@
 #include <vector>
 
 using namespace RS::TL;
+using namespace RS::TL::Detail;
 using namespace RS::UnitTest;
 
 void test_rs_tl_topological_order() {
@@ -16,51 +17,51 @@ void test_rs_tl_topological_order() {
 
     TEST(topo.empty());
     TEST_EQUAL(topo.size(), 0u);
-    TEST_EQUAL(Detail::format_by_node(topo), "");
-    TEST_EQUAL(Detail::format_by_set(topo), "");
+    TEST_EQUAL(format_by_node(topo), "");
+    TEST_EQUAL(format_by_set(topo), "");
 
     TRY(topo.insert(1));
     TEST(! topo.empty());
     TEST_EQUAL(topo.size(), 1u);
-    TEST_EQUAL(Detail::format_by_node(topo), "1\n");
-    TEST_EQUAL(Detail::format_by_set(topo), "[1]\n");
+    TEST_EQUAL(format_by_node(topo), "1\n");
+    TEST_EQUAL(format_by_set(topo), "[1]\n");
 
     TRY(topo.insert(2, 3));
     TEST_EQUAL(topo.size(), 3u);
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1\n"
         "2 => [3]\n"
         "3\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2]\n"
         "[3]\n"
     );
 
     TRY(topo.insert(4, 5));
     TEST_EQUAL(topo.size(), 5u);
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1\n"
         "2 => [3]\n"
         "3\n"
         "4 => [5]\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2,4]\n"
         "[3,5]\n"
     );
 
     TRY(topo.insert(2, 4));
     TEST_EQUAL(topo.size(), 5u);
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1\n"
         "2 => [3,4]\n"
         "3\n"
         "4 => [5]\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2]\n"
         "[3,4]\n"
         "[5]\n"
@@ -68,14 +69,14 @@ void test_rs_tl_topological_order() {
 
     TRY(topo.insert(1, 4));
     TEST_EQUAL(topo.size(), 5u);
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1 => [4]\n"
         "2 => [3,4]\n"
         "3\n"
         "4 => [5]\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2]\n"
         "[3,4]\n"
         "[5]\n"
@@ -83,8 +84,8 @@ void test_rs_tl_topological_order() {
 
     TRY(topo.clear());
     TEST_EQUAL(topo.size(), 0u);
-    TEST_EQUAL(Detail::format_by_node(topo), "");
-    TEST_EQUAL(Detail::format_by_set(topo), "");
+    TEST_EQUAL(format_by_node(topo), "");
+    TEST_EQUAL(format_by_set(topo), "");
 
     TRY(topo.insert_mn({1,2,3}, {4,5,6}));
     TEST_EQUAL(topo.size(), 6u);
@@ -101,7 +102,7 @@ void test_rs_tl_topological_order() {
     TRY(v = topo.front_set());  TEST_EQUAL(format_range(v), "[1,2,3]");
     TRY(v = topo.back_set());   TEST_EQUAL(format_range(v), "[4,5,6]");
 
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1 => [4,5,6]\n"
         "2 => [4,5,6]\n"
         "3 => [4,5,6]\n"
@@ -109,7 +110,7 @@ void test_rs_tl_topological_order() {
         "5\n"
         "6\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2,3]\n"
         "[4,5,6]\n"
     );
@@ -129,14 +130,14 @@ void test_rs_tl_topological_order() {
     TRY(v = topo.front_set());  TEST_EQUAL(format_range(v), "[1]");
     TRY(v = topo.back_set());   TEST_EQUAL(format_range(v), "[5]");
 
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1 => [2,3,4,5]\n"
         "2 => [3,4,5]\n"
         "3 => [4,5]\n"
         "4 => [5]\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1]\n"
         "[2]\n"
         "[3]\n"
@@ -151,7 +152,7 @@ void test_rs_tl_topological_order() {
     v = {4, 5, 6};  TRY(topo.insert_n(v));
     TEST_EQUAL(topo.size(), 6u);
 
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1]\n"
         "[2,4]\n"
         "[3,5]\n"
@@ -188,27 +189,27 @@ void test_rs_tl_topological_order() {
     TRY(topo.insert_mn({1}, {3,4}));
     TRY(topo.insert_mn({2}, {3,5}));
     TRY(topo.insert_mn({3}, {4,5}));
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1 => [3,4]\n"
         "2 => [3,5]\n"
         "3 => [4,5]\n"
         "4\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2]\n"
         "[3]\n"
         "[4,5]\n"
     );
 
     TEST(topo.erase(3));
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "1 => [4]\n"
         "2 => [5]\n"
         "4\n"
         "5\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[1,2]\n"
         "[4,5]\n"
     );
@@ -283,7 +284,7 @@ void test_rs_tl_topological_order_reverse() {
     TRY(v = topo.front_set());  TEST_EQUAL(format_range(v), "[3,2,1]");
     TRY(v = topo.back_set());   TEST_EQUAL(format_range(v), "[6,5,4]");
 
-    TEST_EQUAL(Detail::format_by_node(topo),
+    TEST_EQUAL(format_by_node(topo),
         "6\n"
         "5\n"
         "4\n"
@@ -291,7 +292,7 @@ void test_rs_tl_topological_order_reverse() {
         "2 => [6,5,4]\n"
         "1 => [6,5,4]\n"
     );
-    TEST_EQUAL(Detail::format_by_set(topo),
+    TEST_EQUAL(format_by_set(topo),
         "[3,2,1]\n"
         "[6,5,4]\n"
     );
