@@ -3,7 +3,7 @@
 _[Template Library by Ross Smith](index.html)_
 
 ```c++
-#include "rs-tl/bounded array.hpp"
+#include "rs-tl/bounded-array.hpp"
 namespace RS::TL;
 ```
 
