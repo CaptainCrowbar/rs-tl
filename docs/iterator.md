@@ -57,6 +57,15 @@ and `n` is an integer.
 | `BidirectionalIterator`  | `*t ++t --t t==u`  | `t-> t++ t-- t!=u`                                                       |
 | `RandomAccessIterator`   | `*t t+=n t-u`      | `t-> t[n] ++t t++ --t t-- t-=n t+n n+t t-n t==u t!=u t<u t>u t<=u t>=u`  |
 
+```c++
+template <typename T, typename CV, typename Base> struct AdaptiveIterator;
+```
+
+This is intended for new iterators that adapt some existing iterator type. It
+will inherit from one of the five iterator base classes above, according to
+the iterator category of the `Base` type, which must be another iterator
+type.
+
 ## Range classes
 
 ```c++
