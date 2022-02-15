@@ -65,29 +65,6 @@ namespace RS::TL {
         friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
     };
 
-    template <typename T, typename CV, typename Base, typename Cat = typename std::iterator_traits<Base>::iterator_category>
-    struct AdaptiveIterator;
-
-    template <typename T, typename CV, typename Base>
-    struct AdaptiveIterator<T, CV, Base, std::input_iterator_tag>:
-    public InputIterator<T, CV> {};
-
-    template <typename T, typename CV, typename Base>
-    struct AdaptiveIterator<T, CV, Base, std::output_iterator_tag>:
-    public OutputIterator<T> {};
-
-    template <typename T, typename CV, typename Base>
-    struct AdaptiveIterator<T, CV, Base, std::forward_iterator_tag>:
-    public ForwardIterator<T, CV> {};
-
-    template <typename T, typename CV, typename Base>
-    struct AdaptiveIterator<T, CV, Base, std::bidirectional_iterator_tag>:
-    public BidirectionalIterator<T, CV> {};
-
-    template <typename T, typename CV, typename Base>
-    struct AdaptiveIterator<T, CV, Base, std::random_access_iterator_tag>:
-    public RandomAccessIterator<T, CV> {};
-
     // Iterator classes
 
     template <typename Container>
