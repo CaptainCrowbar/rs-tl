@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.16)
 # and propagate the new version to version.hpp.
 
 project(rs-tl
-    VERSION 0.1.15
+    VERSION 0.1.16
     LANGUAGES CXX
 )
 
@@ -58,10 +58,20 @@ add_executable(${unittest}
     test/meta-test.cpp
     test/algorithm-test.cpp
     test/binary-test.cpp
-    test/fixed-binary-test.cpp
+    test/fixed-binary-small-binary-5-test.cpp
+    test/fixed-binary-small-binary-35-test.cpp
+    test/fixed-binary-large-binary-35-test.cpp
+    test/fixed-binary-large-binary-100-test.cpp
+    test/fixed-binary-misc-test.cpp
     test/guard-test.cpp
-    test/bounded-array-test.cpp
-    test/compact-array-test.cpp
+    test/bounded-array-construction-test.cpp
+    test/bounded-array-insertion-test.cpp
+    test/bounded-array-tracking-test.cpp
+    test/bounded-array-misc-test.cpp
+    test/compact-array-construction-test.cpp
+    test/compact-array-insertion-test.cpp
+    test/compact-array-tracking-test.cpp
+    test/compact-array-misc-test.cpp
     test/index-table-test.cpp
     test/mirror-map-test.cpp
     test/stack-test.cpp

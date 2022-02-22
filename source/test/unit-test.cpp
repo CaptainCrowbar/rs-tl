@@ -63,12 +63,20 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_binary_byte_order)
     UNIT_TEST(rs_tl_binary_birwise_operations)
 
-    // fixed-binary-test.cpp
-    UNIT_TEST(rs_tl_fixed_binary_implementation_selection)
+    // fixed-binary-small-binary-5-test.cpp
     UNIT_TEST(rs_tl_fixed_binary_small_binary_5)
+
+    // fixed-binary-small-binary-35-test.cpp
     UNIT_TEST(rs_tl_fixed_binary_small_binary_35)
+
+    // fixed-binary-large-binary-35-test.cpp
     UNIT_TEST(rs_tl_fixed_binary_large_binary_35)
+
+    // fixed-binary-large-binary-100-test.cpp
     UNIT_TEST(rs_tl_fixed_binary_large_binary_100)
+
+    // fixed-binary-misc-test.cpp
+    UNIT_TEST(rs_tl_fixed_binary_implementation_selection)
     UNIT_TEST(rs_tl_fixed_binary_type_conversions)
     UNIT_TEST(rs_tl_fixed_binary_string_parsing)
     UNIT_TEST(rs_tl_fixed_binary_hash_set)
@@ -76,18 +84,30 @@ int main(int argc, char** argv) {
     // guard-test.cpp
     UNIT_TEST(rs_tl_scope_guards)
 
-    // bounded-array-test.cpp
+    // bounded-array-construction-test.cpp
     UNIT_TEST(rs_tl_bounded_array_construction)
-    UNIT_TEST(rs_tl_bounded_array_capacity)
+
+    // bounded-array-insertion-test.cpp
     UNIT_TEST(rs_tl_bounded_array_insertion)
-    UNIT_TEST(rs_tl_bounded_array_accounting)
+
+    // bounded-array-tracking-test.cpp
+    UNIT_TEST(rs_tl_bounded_array_tracking)
+
+    // bounded-array-misc-test.cpp
+    UNIT_TEST(rs_tl_bounded_array_capacity)
     UNIT_TEST(rs_tl_bounded_array_keys)
 
-    // compact-array-test.cpp
+    // compact-array-construction-test.cpp
     UNIT_TEST(rs_tl_compact_array_construction)
-    UNIT_TEST(rs_tl_compact_array_capacity)
+
+    // compact-array-insertion-test.cpp
     UNIT_TEST(rs_tl_compact_array_insertion)
-    UNIT_TEST(rs_tl_compact_array_accounting)
+
+    // compact-array-tracking-test.cpp
+    UNIT_TEST(rs_tl_compact_array_tracking)
+
+    // compact-array-misc-test.cpp
+    UNIT_TEST(rs_tl_compact_array_capacity)
     UNIT_TEST(rs_tl_compact_array_keys)
 
     // index-table-test.cpp
