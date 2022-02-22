@@ -21,6 +21,11 @@ namespace RS::TL {
         friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
     };
 
+    // SFINAE support
+
+    template <typename T, bool B> struct SfinaeTrue {};
+    template <typename T> struct SfinaeTrue<T, true>: std::true_type {};
+
     // Static assert support
 
     template <typename T> constexpr bool dependent_false = false;

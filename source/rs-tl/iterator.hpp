@@ -73,18 +73,24 @@ namespace RS::TL {
     template <typename T, typename CV, typename Category>
     class FlexibleIterator:
     public InputIterator<T, CV> {
+    private:
+        static constexpr bool is_random = std::is_same_v<Category, std::random_access_iterator_tag>;
+        static constexpr bool is_bidi = is_random || std::is_same_v<Category, std::bidirectional_iterator_tag>;
+        template <typename U = T> using BT = std::enable_if_t<SfinaeTrue<U, is_bidi>::value, T>;
+        template <typename U = T> using RT = std::enable_if_t<SfinaeTrue<U, is_random>::value, T>;
+        template <typename U = T> using RP = std::enable_if_t<SfinaeTrue<U, is_random>::value, ptrdiff_t>;
     public:
         using iterator_category = Category;
-        CV& operator[](ptrdiff_t i) const noexcept { T t = static_cast<const T&>(*this); t += i; return *t; }
-        friend T operator--(T& t, int) { T rc = t; --t; return rc; }
-        friend T& operator-=(T& a, ptrdiff_t b) { return a += - b; }
-        friend T operator+(const T& a, ptrdiff_t b) { T t = a; return t += b; }
-        friend T operator+(ptrdiff_t a, const T& b) { T t = b; return t += a; }
-        friend T operator-(const T& a, ptrdiff_t b) { T t = a; return t -= b; }
-        friend bool operator<(const T& a, const T& b) noexcept { return a - b < 0; }
-        friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
-        friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }
-        friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
+        template <typename U = T> CV& operator[](RP<U> i) const noexcept { T t = static_cast<const T&>(*this); t += i; return *t; }
+        template <typename U = T> friend T operator--(BT<U>& t, int) { T rc = t; --t; return rc; }
+        template <typename U = T> friend T& operator-=(RT<U>& a, ptrdiff_t b) { return a += - b; }
+        template <typename U = T> friend T operator+(const RT<U>& a, ptrdiff_t b) { T t = a; return t += b; }
+        template <typename U = T> friend T operator+(RP<U> a, const T& b) { T t = b; return t += a; }
+        template <typename U = T> friend T operator-(const RT<U>& a, ptrdiff_t b) { T t = a; return t -= b; }
+        template <typename U = T> friend bool operator<(const RT<U>& a, const T& b) noexcept { return a - b < 0; }
+        template <typename U = T> friend bool operator>(const RT<U>& a, const T& b) noexcept { return b < a; }
+        template <typename U = T> friend bool operator<=(const RT<U>& a, const T& b) noexcept { return ! (b < a); }
+        template <typename U = T> friend bool operator>=(const RT<U>& a, const T& b) noexcept { return ! (a < b); }
     };
 
     // Iterator classes

@@ -34,6 +34,16 @@ template <typename T> struct TotalOrder;
 Given `==` and `<` operators for `T`, this defines the other comparison
 operators: `!= > <= >=`.
 
+## SFINAE support
+
+```c++
+template <typename T, bool B> struct SfinaeTrue {};
+template <typename T> struct SfinaeTrue<T, true>: std::true_type {};
+```
+
+Creates an artificial dependency to allow `enable_if` to be used in contexts
+that are not directly dependent.
+
 ## Static assert support
 
 ```c++
