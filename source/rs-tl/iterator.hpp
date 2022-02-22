@@ -10,7 +10,8 @@ namespace RS::TL {
     // Mixin classes
 
     template <typename T, typename CV>
-    struct InputIterator {
+    class InputIterator {
+    public:
         using difference_type = ptrdiff_t;
         using iterator_category = std::input_iterator_tag;
         using pointer = CV*;
@@ -22,7 +23,8 @@ namespace RS::TL {
     };
 
     template <typename T>
-    struct OutputIterator {
+    class OutputIterator {
+    public:
         using difference_type = void;
         using iterator_category = std::output_iterator_tag;
         using pointer = void;
@@ -34,21 +36,24 @@ namespace RS::TL {
     };
 
     template <typename T, typename CV>
-    struct ForwardIterator:
-    InputIterator<T, CV> {
+    class ForwardIterator:
+    public InputIterator<T, CV> {
+    public:
         using iterator_category = std::forward_iterator_tag;
     };
 
     template <typename T, typename CV>
-    struct BidirectionalIterator:
-    ForwardIterator<T, CV> {
+    class BidirectionalIterator:
+    public ForwardIterator<T, CV> {
+    public:
         using iterator_category = std::bidirectional_iterator_tag;
         friend T operator--(T& t, int) { T rc = t; --t; return rc; }
     };
 
     template <typename T, typename CV>
-    struct RandomAccessIterator:
-    BidirectionalIterator<T, CV> {
+    class RandomAccessIterator:
+    public BidirectionalIterator<T, CV> {
+    public:
         // Inheriting from TotalOrder here would lead to function resolution collision for operator!=
         using iterator_category = std::random_access_iterator_tag;
         CV& operator[](ptrdiff_t i) const noexcept { T t = static_cast<const T&>(*this); t += i; return *t; }
@@ -59,6 +64,23 @@ namespace RS::TL {
         friend T operator+(ptrdiff_t a, const T& b) { T t = b; return t += a; }
         friend T operator-(const T& a, ptrdiff_t b) { T t = a; return t -= b; }
         friend bool operator==(const T& a, const T& b) noexcept { return a - b == 0; }
+        friend bool operator<(const T& a, const T& b) noexcept { return a - b < 0; }
+        friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
+        friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }
+        friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
+    };
+
+    template <typename T, typename CV, typename Category>
+    class FlexibleIterator:
+    public InputIterator<T, CV> {
+    public:
+        using iterator_category = Category;
+        CV& operator[](ptrdiff_t i) const noexcept { T t = static_cast<const T&>(*this); t += i; return *t; }
+        friend T operator--(T& t, int) { T rc = t; --t; return rc; }
+        friend T& operator-=(T& a, ptrdiff_t b) { return a += - b; }
+        friend T operator+(const T& a, ptrdiff_t b) { T t = a; return t += b; }
+        friend T operator+(ptrdiff_t a, const T& b) { T t = b; return t += a; }
+        friend T operator-(const T& a, ptrdiff_t b) { T t = a; return t -= b; }
         friend bool operator<(const T& a, const T& b) noexcept { return a - b < 0; }
         friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
         friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }

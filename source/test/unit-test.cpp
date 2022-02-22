@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_types_range_category)
 
     // iterator-test.cpp
+    UNIT_TEST(rs_tl_iterator_mixins)
     UNIT_TEST(rs_tl_iterator_append_overwrite)
     UNIT_TEST(rs_tl_iterator_subrange)
 

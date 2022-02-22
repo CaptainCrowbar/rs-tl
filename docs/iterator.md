@@ -31,31 +31,37 @@ and then returns an append iterator.
 
 ## Mixin classes
 
-These are intended to be used as base classes, following the well known CRTP
-pattern, and will supply the boilerplate to define several common member or
-non-member functions given certain pre-defined functions of the derived
-type `T`.
-
 ```c++
-template <typename T, typename CV> struct InputIterator;
-template <typename T> struct OutputIterator;
-template <typename T, typename CV> struct ForwardIterator;
-template <typename T, typename CV> struct BidirectionalIterator;
-template <typename T, typename CV> struct RandomAccessIterator;
+template <typename T, typename CV> class InputIterator;
+template <typename T> class OutputIterator;
+template <typename T, typename CV> class ForwardIterator;
+template <typename T, typename CV> class BidirectionalIterator;
+template <typename T, typename CV> class RandomAccessIterator;
+template <typename T, typename CV, typename Category> class FlexibleIterator:
+
 ```
 
-`CV` is either `V` or `const V`, where `V` is the value type, to determine
-whether a mutable or const iterator is generated. In the table below, `t` and
-`u` are objects of type `T`, `x` is an object of the iterator's value type,
-and `n` is an integer.
+These are intended to be used as base classes, following the well known CRTP
+pattern, and will supply the boilerplate to define several common member or
+non-member functions given certain pre-defined functions of the derived type
+`T`. `CV` is either `V` or `const V`, where `V` is the value type; this
+determines whether a mutable or const iterator is generated.
 
-| Mixin                    | Requires           | Defines                                                                  |
-| -----                    | --------           | -------                                                                  |
-| `InputIterator`          | `*t ++t t==u`      | `t-> t++ t!=u`                                                           |
-| `OutputIterator`         | `t=x`              | `*t ++t t++`                                                             |
-| `ForwardIterator`        | `*t ++t t==u`      | `t-> t++ t!=u`                                                           |
-| `BidirectionalIterator`  | `*t ++t --t t==u`  | `t-> t++ t-- t!=u`                                                       |
-| `RandomAccessIterator`   | `*t t+=n t-u`      | `t-> t[n] ++t t++ --t t-- t-=n t+n n+t t-n t==u t!=u t<u t>u t<=u t>=u`  |
+The `FlexibleIterator` class can be used for iterators whose category varies
+depending on static conditions. Behaviour is undefined if `Category` is not
+one of the standard iterator category tags.
+
+In the table below, `t` and `u` are objects of type `T` (the derived iterator
+type), `x` is an object of the iterator's value type, and `n` is an integer.
+
+| Mixin                    | Requires                    | Defines                                                                  |
+| -----                    | --------                    | -------                                                                  |
+| `InputIterator`          | `*t ++t t==u`               | `t-> t++ t!=u`                                                           |
+| `OutputIterator`         | `t=x`                       | `*t ++t t++`                                                             |
+| `ForwardIterator`        | `*t ++t t==u`               | `t-> t++ t!=u`                                                           |
+| `BidirectionalIterator`  | `*t ++t --t t==u`           | `t-> t++ t-- t!=u`                                                       |
+| `RandomAccessIterator`   | `*t t+=n t-u`               | `t-> t[n] ++t t++ --t t-- t-=n t+n n+t t-n t==u t!=u t<u t>u t<=u t>=u`  |
+| `FlexibleIterator`       | `*t ++t --t t+=n t-u t==u`  | `t-> t[n] t++ t-- t+n n+t t-=n t-n t!=u t<u t>u t<=u t>=u`               |
 
 ## Range classes
 
