@@ -2,6 +2,7 @@
 #include "rs-unit-test.hpp"
 #include <algorithm>
 #include <iterator>
+#include <memory>
 #include <set>
 #include <vector>
 
@@ -66,6 +67,18 @@ void test_rs_tl_iterator_mixins() {
     auto it = Random(v, 0);
     TEST_EQUAL(it[0], 1);
     TEST_EQUAL(it[4], 5);
+
+}
+
+void test_rs_tl_iterator_dereference() {
+
+    std::vector<std::shared_ptr<int>> v;
+
+    for (int i = 1; i <= 10; ++i)
+        v.push_back(std::make_shared<int>(i));
+
+    auto range = dereference_range(v);
+    TEST_EQUAL(format_range(range), "[1,2,3,4,5,6,7,8,9,10]");
 
 }
 

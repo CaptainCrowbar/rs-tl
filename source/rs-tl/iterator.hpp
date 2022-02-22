@@ -120,6 +120,39 @@ namespace RS::TL {
         return AppendIterator<Container>(c);
     }
 
+    template <typename Iterator>
+    class DereferenceIterator:
+    public FlexibleIterator<
+        DereferenceIterator<Iterator>,
+        std::remove_reference_t<typename std::iterator_traits<Iterator>::reference>,
+        typename std::iterator_traits<Iterator>::iterator_category
+    > {
+    public:
+        DereferenceIterator() = default;
+        explicit DereferenceIterator(Iterator i): iter_(i) {}
+        auto& operator*() const { return **iter_; }
+        DereferenceIterator& operator++() { ++iter_; return *this; }
+        DereferenceIterator& operator--() { --iter_; return *this; }
+        DereferenceIterator& operator+=(ptrdiff_t n) { iter_ += n; return *this; }
+        ptrdiff_t operator-(const DereferenceIterator& i) const { return iter_ - i.iter_; }
+        bool operator==(const DereferenceIterator& i) const { return iter_ == i.iter_; }
+    private:
+        Iterator iter_;
+    };
+
+    template <typename Iterator>
+    auto dereference_iterator(Iterator i) {
+        return DereferenceIterator<Iterator>(i);
+    }
+
+    template <typename Range>
+    auto dereference_range(Range& r) {
+        using DI = DereferenceIterator<RangeIterator<Range>>;
+        using std::begin;
+        using std::end;
+        return irange(DI(begin(r)), DI(end(r)));
+    }
+
     // Range classes
 
     template <typename Iterator>

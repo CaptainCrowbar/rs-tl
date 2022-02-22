@@ -29,6 +29,18 @@ The `append()` function returns an append iterator for the container. The
 `overwrite()` function is a convenience function that clears the container
 and then returns an append iterator.
 
+```c++
+template <typename Iterator> class DereferenceIterator;
+template <typename Iterator> auto dereference_iterator(Iterator i);
+template <typename Range> auto dereference_range(Range& r);
+```
+
+`DereferenceIterator` is a thin wrapper around `Iterator` that provides all of
+the same behaviour(iterator category and mutability), except that it adds
+another level of dereferencing over the original iterator's value type, which
+must be a type with a unary `*` operator. For example, if `Iterator` has
+value type `T*`, then `DereferenceIterator` has value type `T`.
+
 ## Mixin classes
 
 ```c++
