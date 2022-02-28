@@ -28,7 +28,16 @@ non-member functions given certain pre-defined functions of the derived
 type `T`.
 
 ```c++
-template <typename T> struct TotalOrder;
+template <typename T> class BinaryOperators;
+```
+
+Given some or all of the fused arithmetic assignment operators
+`+= -= *= /= %= &= |= ^=` for `T`, this defines the corresponding plain
+binary operators `+ - * / % & | ^`. The shift operators are not included
+because the RHS is frequently not the same type.
+
+```c++
+template <typename T> class TotalOrder;
 ```
 
 Given `==` and `<` operators for `T`, this defines the other comparison

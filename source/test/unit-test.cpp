@@ -7,6 +7,7 @@ int main(int argc, char** argv) {
     RS::UnitTest::begin_tests(argc, argv);
 
     // types-test.cpp
+    UNIT_TEST(rs_tl_types_mixins)
     UNIT_TEST(rs_tl_types_traits)
     UNIT_TEST(rs_tl_types_iterator_category)
     UNIT_TEST(rs_tl_types_range_category)

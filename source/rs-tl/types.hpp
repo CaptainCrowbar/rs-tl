@@ -7,32 +7,24 @@
 
 namespace RS::TL {
 
-    // Constants
-
-    constexpr size_t npos = std::string::npos;
-
-    // Mixin classes
-
-    template <typename T>
-    struct TotalOrder {
-        friend bool operator!=(const T& a, const T& b) noexcept { return ! (a == b); }
-        friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
-        friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }
-        friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
-    };
-
-    // SFINAE support
-
-    template <typename T, bool B> struct SfinaeTrue {};
-    template <typename T> struct SfinaeTrue<T, true>: std::true_type {};
-
-    // Static assert support
-
-    template <typename T> constexpr bool dependent_false = false;
-
-    // Type traits
-
     namespace Detail {
+
+        template <typename T, typename = void> struct HasAddAssignOperator: std::false_type {};
+        template <typename T> struct HasAddAssignOperator<T, std::void_t<decltype(std::declval<T&>() += std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasSubtractAssignOperator: std::false_type {};
+        template <typename T> struct HasSubtractAssignOperator<T, std::void_t<decltype(std::declval<T&>() -= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasMultiplyAssignOperator: std::false_type {};
+        template <typename T> struct HasMultiplyAssignOperator<T, std::void_t<decltype(std::declval<T&>() *= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasDivideAssignOperator: std::false_type {};
+        template <typename T> struct HasDivideAssignOperator<T, std::void_t<decltype(std::declval<T&>() /= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasRemainderAssignOperator: std::false_type {};
+        template <typename T> struct HasRemainderAssignOperator<T, std::void_t<decltype(std::declval<T&>() %= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasBitwiseAndAssignOperator: std::false_type {};
+        template <typename T> struct HasBitwiseAndAssignOperator<T, std::void_t<decltype(std::declval<T&>() &= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasBitwiseOrAssignOperator: std::false_type {};
+        template <typename T> struct HasBitwiseOrAssignOperator<T, std::void_t<decltype(std::declval<T&>() |= std::declval<T>())>>: std::true_type {};
+        template <typename T, typename = void> struct HasBitwiseXorAssignOperator: std::false_type {};
+        template <typename T> struct HasBitwiseXorAssignOperator<T, std::void_t<decltype(std::declval<T&>() ^= std::declval<T>())>>: std::true_type {};
 
         template <typename T, typename = void> struct HasIteratorCategory: std::false_type {};
         template <typename T> struct HasIteratorCategory<T, std::void_t<typename std::iterator_traits<T>::iterator_category>>: std::true_type {};
@@ -71,6 +63,61 @@ namespace RS::TL {
         template <typename T> constexpr bool is_pairlike = HasFirstMember<T>::value && HasSecondMember<T>::value;
 
     }
+
+    // Constants
+
+    constexpr size_t npos = std::string::npos;
+
+    // Mixin classes
+
+    template <typename T>
+    class BinaryOperators {
+    public:
+        template <typename U = T> friend T operator+(const T& a,
+            const std::enable_if_t<Detail::HasAddAssignOperator<U>::value, T>& b)
+                { T c = a; c += b; return c; }
+        template <typename U = T> friend T operator-(const T& a,
+            const std::enable_if_t<Detail::HasSubtractAssignOperator<U>::value, T>& b)
+                { T c = a; c -= b; return c; }
+        template <typename U = T> friend T operator*(const T& a,
+            const std::enable_if_t<Detail::HasMultiplyAssignOperator<U>::value, T>& b)
+                { T c = a; c *= b; return c; }
+        template <typename U = T> friend T operator/(const T& a,
+            const std::enable_if_t<Detail::HasDivideAssignOperator<U>::value, T>& b)
+                { T c = a; c /= b; return c; }
+        template <typename U = T> friend T operator%(const T& a,
+            const std::enable_if_t<Detail::HasRemainderAssignOperator<U>::value, T>& b)
+                { T c = a; c %= b; return c; }
+        template <typename U = T> friend T operator&(const T& a,
+            const std::enable_if_t<Detail::HasBitwiseAndAssignOperator<U>::value, T>& b)
+                { T c = a; c &= b; return c; }
+        template <typename U = T> friend T operator|(const T& a,
+            const std::enable_if_t<Detail::HasBitwiseOrAssignOperator<U>::value, T>& b)
+                { T c = a; c |= b; return c; }
+        template <typename U = T> friend T operator^(const T& a,
+            const std::enable_if_t<Detail::HasBitwiseXorAssignOperator<U>::value, T>& b)
+                { T c = a; c ^= b; return c; }
+    };
+
+    template <typename T>
+    class TotalOrder {
+    public:
+        friend bool operator!=(const T& a, const T& b) noexcept { return ! (a == b); }
+        friend bool operator>(const T& a, const T& b) noexcept { return b < a; }
+        friend bool operator<=(const T& a, const T& b) noexcept { return ! (b < a); }
+        friend bool operator>=(const T& a, const T& b) noexcept { return ! (a < b); }
+    };
+
+    // SFINAE support
+
+    template <typename T, bool B> struct SfinaeTrue {};
+    template <typename T> struct SfinaeTrue<T, true>: std::true_type {};
+
+    // Static assert support
+
+    template <typename T> constexpr bool dependent_false = false;
+
+    // Type traits
 
     template <typename T> constexpr bool is_iterator = Detail::HasIteratorCategory<T>::value;
     template <typename T> constexpr bool is_range = (Detail::HasAdlBeginFunction<T>::value && Detail::HasAdlEndFunction<T>::value)
