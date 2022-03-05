@@ -8,6 +8,7 @@
 #include "rs-tl/guard.hpp"
 #include "rs-tl/index-table.hpp"
 #include "rs-tl/iterator.hpp"
+#include "rs-tl/log.hpp"
 #include "rs-tl/meta.hpp"
 #include "rs-tl/mirror-map.hpp"
 #include "rs-tl/stack.hpp"

@@ -29,6 +29,7 @@ for this library's unit tests.
 * [Basic types](types.html)
 * [Fixed-size binary numbers](fixed-binary.html)
 * [Iterator types and algorithms](iterator.html)
+* [Logging](log.html)
 * [Metaprogramming utilities](meta.html)
 * [Scope guards](guard.html)
 * [Thread](thread.html)

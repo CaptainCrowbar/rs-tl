@@ -18,6 +18,10 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_iterator_append_overwrite)
     UNIT_TEST(rs_tl_iterator_subrange)
 
+    // log-test.cpp
+    UNIT_TEST(rs_format_logging)
+    UNIT_TEST(rs_format_logging_output)
+
     // meta-test.cpp
     UNIT_TEST(rs_tl_meta_append)
     UNIT_TEST(rs_tl_meta_concat)

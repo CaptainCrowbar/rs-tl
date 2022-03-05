@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.16)
 # and propagate the new version to version.hpp.
 
 project(rs-tl
-    VERSION 0.1.19
+    VERSION 0.1.20
     LANGUAGES CXX
 )
 
@@ -55,6 +55,7 @@ find_package(Threads REQUIRED)
 add_executable(${unittest}
     test/types-test.cpp
     test/iterator-test.cpp
+    test/log-test.cpp
     test/meta-test.cpp
     test/algorithm-test.cpp
     test/binary-test.cpp
