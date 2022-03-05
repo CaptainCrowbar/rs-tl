@@ -1,6 +1,5 @@
 #pragma once
 
-#include "rs-tl/types.hpp"
 #include <atomic>
 #include <chrono>
 #include <cstdio>
@@ -39,12 +38,10 @@ namespace RS::TL {
                 return ' ' + std::to_string(t);
             } else if constexpr (HasStrMethod<T>::value) {
                 return ' ' + t.str();
-            } else if constexpr (HasOutputOperator<T>::value) {
+            } else {
                 std::ostringstream out;
                 out << ' ' << t;
                 return out.str();
-            } else {
-                static_assert(dependent_false<T>, "No logging format for this type");
             }
         }
 
@@ -125,7 +122,7 @@ namespace RS::TL {
             if (file != nullptr) {
                 std::string name = file;
                 size_t cut = name.find_last_of(delimiters);
-                if (cut != npos)
+                if (cut != std::string::npos)
                     name.erase(0, cut + 1);
                 message += ' ' + name + ' ' + func + "() " + std::to_string(line);
             }
