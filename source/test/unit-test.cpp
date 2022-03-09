@@ -14,8 +14,9 @@ int main(int argc, char** argv) {
 
     // iterator-test.cpp
     UNIT_TEST(rs_tl_iterator_mixins)
-    UNIT_TEST(rs_tl_iterator_dereference)
     UNIT_TEST(rs_tl_iterator_append_overwrite)
+    UNIT_TEST(rs_tl_iterator_dereference)
+    UNIT_TEST(rs_tl_iterator_iota)
     UNIT_TEST(rs_tl_iterator_subrange)
 
     // log-test.cpp

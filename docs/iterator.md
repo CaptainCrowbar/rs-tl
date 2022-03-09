@@ -41,6 +41,31 @@ another level of dereferencing over the original iterator's value type, which
 must be a type with a unary `*` operator. For example, if `Iterator` has
 value type `T*`, then `DereferenceIterator` has value type `T`.
 
+```c++
+template <typename T> class IotaIterator {
+    IotaIterator();
+    explicit IotaIterator(T start);
+    IotaIterator(T start, T delta);
+};
+template <typename T>
+    Irange<IotaIterator<T>> iota_range(T stop);
+template <typename T>
+    Irange<IotaIterator<T>> iota_range(T start, T stop);
+template <typename T>
+    Irange<IotaIterator<T>> iota_range(T start, T stop, T delta);
+```
+
+A forward iterator over a sequence of integers, or an integer-like type. `T`
+must have an addition operator. If an iterator or range constructor is used
+that does not supply all three parameters, an explicit conversion from `int`
+to `T` must exist.
+
+The first version of `iota_range()` iterates from zero to `stop-1`. The second
+version iterates from `start` to `stop-1`, or from `start` down to `stop+1`
+if `start>stop`. The third version iterates from `start` to `stop-delta` in
+increments of `delta`. Behaviour is undefined if `stop-start` is not a
+multiple of `delta`.
+
 ## Mixin classes
 
 ```c++

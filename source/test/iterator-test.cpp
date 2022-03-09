@@ -4,6 +4,7 @@
 #include <iterator>
 #include <memory>
 #include <set>
+#include <string>
 #include <vector>
 
 using namespace RS::TL;
@@ -70,18 +71,6 @@ void test_rs_tl_iterator_mixins() {
 
 }
 
-void test_rs_tl_iterator_dereference() {
-
-    std::vector<std::shared_ptr<int>> v;
-
-    for (int i = 1; i <= 10; ++i)
-        v.push_back(std::make_shared<int>(i));
-
-    auto range = dereference_range(v);
-    TEST_EQUAL(format_range(range), "[1,2,3,4,5,6,7,8,9,10]");
-
-}
-
 void test_rs_tl_iterator_append_overwrite() {
 
     std::vector<int> u = {10,20,30,40,50};
@@ -108,6 +97,47 @@ void test_rs_tl_iterator_append_overwrite() {
     TRY(std::copy(u.begin(), u.end(), overwrite(s)));
     TEST_EQUAL(s.size(), 5u);
     TEST_EQUAL(format_range(s), "[10,20,30,40,50]");
+
+}
+
+void test_rs_tl_iterator_dereference() {
+
+    std::vector<std::shared_ptr<int>> v;
+
+    for (int i = 1; i <= 10; ++i)
+        v.push_back(std::make_shared<int>(i));
+
+    auto range = dereference_range(v);
+    TEST_EQUAL(format_range(range), "[1,2,3,4,5,6,7,8,9,10]");
+
+}
+
+void test_rs_tl_iterator_iota() {
+
+    auto xs = iota_range(5);
+    std::vector<int> v;
+    for (auto x: xs)
+        v.push_back(x);
+    TEST_EQUAL(format_range(v), "[0,1,2,3,4]");
+
+    TRY(std::copy(xs.begin(), xs.end(), overwrite(v)));
+    TEST_EQUAL(format_range(v), "[0,1,2,3,4]");
+
+    TRY(xs = iota_range(1, 6));
+    TRY(std::copy(xs.begin(), xs.end(), overwrite(v)));
+    TEST_EQUAL(format_range(v), "[1,2,3,4,5]");
+
+    TRY(xs = iota_range(5, 0));
+    TRY(std::copy(xs.begin(), xs.end(), overwrite(v)));
+    TEST_EQUAL(format_range(v), "[5,4,3,2,1]");
+
+    TRY(xs = iota_range(1, 11, 2));
+    TRY(std::copy(xs.begin(), xs.end(), overwrite(v)));
+    TEST_EQUAL(format_range(v), "[1,3,5,7,9]");
+
+    TRY(xs = iota_range(9, -1, -2));
+    TRY(std::copy(xs.begin(), xs.end(), overwrite(v)));
+    TEST_EQUAL(format_range(v), "[9,7,5,3,1]");
 
 }
 

@@ -93,6 +93,51 @@ namespace RS::TL {
         template <typename U = T> friend bool operator>=(const RT<U>& a, const T& b) noexcept { return ! (a < b); }
     };
 
+    // Range classes
+
+    template <typename Iterator>
+    struct Irange {
+        Iterator first, second;
+        Iterator begin() const { return first; }
+        Iterator end() const { return second; }
+        bool empty() const noexcept { return first == second; }
+    };
+
+    template <typename Iterator>
+    Irange<Iterator> irange(Iterator i, Iterator j) {
+        return {i, j};
+    }
+
+    template <typename Iterator>
+    Irange<Iterator> irange(std::pair<Iterator, Iterator> p) {
+        return {p.first, p.second};
+    }
+
+    template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset) {
+        using std::begin;
+        using std::end;
+        auto i = begin(range);
+        auto j = end(range);
+        if (offset >= 0) {
+            for (; offset > 0 && i != j; ++i, --offset) {}
+        } else {
+            if constexpr (is_bidirectional_range<Range>) {
+                auto k = j;
+                for (; offset < 0 && k != i; --k, ++offset) {}
+                i = k;
+            }
+        }
+        return {i, j};
+    }
+
+    template <typename Range>
+    Irange<RangeIterator<Range>> subrange(Range& range, int offset, int offset2) {
+        auto sub1 = subrange(range, offset);
+        auto sub2 = subrange(sub1, offset2);
+        return {sub1.first, sub2.first};
+    }
+
     // Iterator classes
 
     template <typename Container>
@@ -153,49 +198,35 @@ namespace RS::TL {
         return irange(DI(begin(r)), DI(end(r)));
     }
 
-    // Range classes
-
-    template <typename Iterator>
-    struct Irange {
-        Iterator first, second;
-        Iterator begin() const { return first; }
-        Iterator end() const { return second; }
-        bool empty() const noexcept { return first == second; }
+    template <typename T>
+    class IotaIterator:
+    public ForwardIterator<IotaIterator<T>, const T> {
+    public:
+        IotaIterator() = default;
+        explicit IotaIterator(T start): value_(start), delta_(static_cast<T>(1)) {}
+        IotaIterator(T start, T delta): value_(start), delta_(delta) {}
+        const T& operator*() const noexcept { return value_; }
+        IotaIterator& operator++() { value_ += delta_; return *this; }
+        bool operator==(const IotaIterator& i) const noexcept { return value_ == i.value_; }
+    private:
+        T value_ = T(0);
+        T delta_ = T(1);
     };
 
-    template <typename Iterator>
-    Irange<Iterator> irange(Iterator i, Iterator j) {
-        return {i, j};
+    template <typename T>
+    Irange<IotaIterator<T>> iota_range(T stop) {
+        return {{T(0), T(1)}, {stop, T(1)}};
     }
 
-    template <typename Iterator>
-    Irange<Iterator> irange(std::pair<Iterator, Iterator> p) {
-        return {p.first, p.second};
+    template <typename T>
+    Irange<IotaIterator<T>> iota_range(T start, T stop) {
+        T delta = stop < start ? T(-1) : T(1);
+        return {{start, delta}, {stop, delta}};
     }
 
-    template <typename Range>
-    Irange<RangeIterator<Range>> subrange(Range& range, int offset) {
-        using std::begin;
-        using std::end;
-        auto i = begin(range);
-        auto j = end(range);
-        if (offset >= 0) {
-            for (; offset > 0 && i != j; ++i, --offset) {}
-        } else {
-            if constexpr (is_bidirectional_range<Range>) {
-                auto k = j;
-                for (; offset < 0 && k != i; --k, ++offset) {}
-                i = k;
-            }
-        }
-        return {i, j};
-    }
-
-    template <typename Range>
-    Irange<RangeIterator<Range>> subrange(Range& range, int offset, int offset2) {
-        auto sub1 = subrange(range, offset);
-        auto sub2 = subrange(sub1, offset2);
-        return {sub1.first, sub2.first};
+    template <typename T>
+    Irange<IotaIterator<T>> iota_range(T start, T stop, T delta) {
+        return {{start, delta}, {stop, delta}};
     }
 
 }
