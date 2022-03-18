@@ -56,7 +56,31 @@
     [[maybe_unused]] inline std::ostream& operator<<(std::ostream& out, EnumType t) { \
         return out << to_string(t); \
     }
+
 #define RS_DEFINE_ENUM(EnumType, IntType, first_value, first_name, ...) \
     RS_DEFINE_ENUM_IMPL_(EnumType,, IntType, first_value, first_name, __VA_ARGS__)
+
 #define RS_DEFINE_ENUM_CLASS(EnumType, IntType, first_value, first_name, ...) \
     RS_DEFINE_ENUM_IMPL_(EnumType, class, IntType, first_value, first_name, __VA_ARGS__)
+
+#define RS_DEFINE_BITMASK_OPERATORS(EnumClass) \
+    [[maybe_unused]] constexpr bool operator!(EnumClass x) noexcept { return x == EnumClass(); } \
+    [[maybe_unused]] constexpr EnumClass operator~(EnumClass x) noexcept { \
+        using U = std::underlying_type_t<EnumClass>; \
+        return EnumClass(~ U(x)); \
+    } \
+    [[maybe_unused]] constexpr EnumClass operator&(EnumClass x, EnumClass y) noexcept { \
+        using U = std::underlying_type_t<EnumClass>; \
+        return EnumClass(U(x) & U(y)); \
+    } \
+    [[maybe_unused]] constexpr EnumClass operator|(EnumClass x, EnumClass y) noexcept { \
+        using U = std::underlying_type_t<EnumClass>; \
+        return EnumClass(U(x) | U(y)); \
+    } \
+    [[maybe_unused]] constexpr EnumClass operator^(EnumClass x, EnumClass y) noexcept { \
+        using U = std::underlying_type_t<EnumClass>; \
+        return EnumClass(U(x) ^ U(y)); \
+    } \
+    [[maybe_unused]] constexpr EnumClass& operator&=(EnumClass& x, EnumClass y) noexcept { return x = x & y; } \
+    [[maybe_unused]] constexpr EnumClass& operator|=(EnumClass& x, EnumClass y) noexcept { return x = x | y; } \
+    [[maybe_unused]] constexpr EnumClass& operator^=(EnumClass& x, EnumClass y) noexcept { return x = x ^ y; }

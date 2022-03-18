@@ -28,6 +28,9 @@ These define an `enum` or `enum class` type. The macro arguments are the type
 name, the underlying integer type, the integer value at which to start, and a
 list of enumeration constant names.
 
+This works only at namespace scope; it can't be used to define class member
+types.
+
 Example:
 
 ```c++
@@ -74,3 +77,23 @@ These convert an enumeration value to a string containing its unqualified
 name. If an argument is supplied that does not correspond to a named
 enumeration constant, they will call `std::to_string()` on its integer
 value.
+
+## Bitmask operators
+
+```c++
+#define RS_DEFINE_BITMASK_OPERATORS(EnumClass)
+```
+
+This defines the standard bitwise operators on an enumeration type, allowing
+an `enum class` to be used as a set of bitmask values. The following
+operators are defined:
+
+* Unary operators: `! ~`
+* Binary operators: `& | ^ &= |= ^=`
+
+These all have their natural meaning in terms of the corresponding operations
+on the underlying integer type.
+
+This can be used on enumeration classes that are defined either in namespace
+scope or as class members; in the latter case the macro must be used in
+namespace scope outside the class.

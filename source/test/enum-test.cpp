@@ -7,7 +7,7 @@
 RS_DEFINE_ENUM(Etype, uint32_t, 1, alpha, bravo, charlie)
 RS_DEFINE_ENUM_CLASS(Eclass, int64_t, -1, xray, yankee, zulu)
 
-void test_rs_format_enum_macros() {
+void test_rs_format_enum_definition() {
 
     std::vector<std::string> names;
     std::vector<Etype> etvec;
@@ -64,5 +64,69 @@ void test_rs_format_enum_macros() {
 
     TEST(! parse_enum("xray", et));
     TEST(! parse_enum("alpha", ec));
+
+}
+
+enum class Mask: uint16_t {
+    z = 0,
+    a = 1,
+    b = 2,
+    c = 4,
+};
+
+class C {
+public:
+    enum class Mtype: uint16_t {
+        z = 0,
+        a = 1,
+        b = 2,
+        c = 4,
+    };
+};
+
+RS_DEFINE_BITMASK_OPERATORS(Mask)
+RS_DEFINE_BITMASK_OPERATORS(C::Mtype)
+
+inline std::ostream& operator<<(std::ostream& out, Mask m) { return out << "M" << uint16_t(m); }
+inline std::ostream& operator<<(std::ostream& out, C::Mtype m) { return out << "CM" << uint16_t(m); }
+
+void test_rs_format_enum_bitmask_operators() {
+
+    Mask m = {};
+    C::Mtype cm = {};
+
+    TEST(! m);
+    TEST_EQUAL(~ m, Mask(65535));
+
+    TEST(! cm);
+    TEST_EQUAL(~ cm, C::Mtype(65535));
+
+    m = Mask::a & Mask::c;  TEST_EQUAL(m, Mask::z);
+    m = Mask::a | Mask::c;  TEST_EQUAL(m, Mask(5));
+    m = Mask::a ^ Mask::c;  TEST_EQUAL(m, Mask(5));
+    m = Mask(7) & Mask::b;  TEST_EQUAL(m, Mask::b);
+    m = Mask(7) | Mask::b;  TEST_EQUAL(m, Mask(7));
+    m = Mask(7) ^ Mask::b;  TEST_EQUAL(m, Mask(5));
+
+    m = Mask::a;  m &= Mask::c;  TEST_EQUAL(m, Mask::z);
+    m = Mask::a;  m |= Mask::c;  TEST_EQUAL(m, Mask(5));
+    m = Mask::a;  m ^= Mask::c;  TEST_EQUAL(m, Mask(5));
+    m = Mask(7);  m &= Mask::b;  TEST_EQUAL(m, Mask::b);
+    m = Mask(7);  m |= Mask::b;  TEST_EQUAL(m, Mask(7));
+    m = Mask(7);  m ^= Mask::b;  TEST_EQUAL(m, Mask(5));
+
+    cm = C::Mtype::a & C::Mtype::c;  TEST_EQUAL(cm, C::Mtype::z);
+    cm = C::Mtype::a | C::Mtype::c;  TEST_EQUAL(cm, C::Mtype(5));
+    cm = C::Mtype::a ^ C::Mtype::c;  TEST_EQUAL(cm, C::Mtype(5));
+    cm = C::Mtype(7) & C::Mtype::b;  TEST_EQUAL(cm, C::Mtype::b);
+    cm = C::Mtype(7) | C::Mtype::b;  TEST_EQUAL(cm, C::Mtype(7));
+    cm = C::Mtype(7) ^ C::Mtype::b;  TEST_EQUAL(cm, C::Mtype(5));
+
+    cm = C::Mtype::a;  cm &= C::Mtype::c;  TEST_EQUAL(cm, C::Mtype::z);
+    cm = C::Mtype::a;  cm |= C::Mtype::c;  TEST_EQUAL(cm, C::Mtype(5));
+    cm = C::Mtype::a;  cm ^= C::Mtype::c;  TEST_EQUAL(cm, C::Mtype(5));
+    cm = C::Mtype(7);  cm &= C::Mtype::b;  TEST_EQUAL(cm, C::Mtype::b);
+    cm = C::Mtype(7);  cm |= C::Mtype::b;  TEST_EQUAL(cm, C::Mtype(7));
+    cm = C::Mtype(7);  cm ^= C::Mtype::b;  TEST_EQUAL(cm, C::Mtype(5));
 
 }

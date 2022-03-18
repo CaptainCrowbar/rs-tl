@@ -13,7 +13,8 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_types_range_category)
 
     // enum-test.cpp
-    UNIT_TEST(rs_format_enum_macros)
+    UNIT_TEST(rs_format_enum_definition)
+    UNIT_TEST(rs_format_enum_bitmask_operators)
 
     // iterator-test.cpp
     UNIT_TEST(rs_tl_iterator_mixins)
