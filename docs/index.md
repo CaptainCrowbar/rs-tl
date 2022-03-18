@@ -25,8 +25,9 @@ for this library's unit tests.
 ## Index
 
 * [Algorithms](algorithm.html)
-* [Bitwise operations](binary.html)
 * [Basic types](types.html)
+* [Bitwise operations](binary.html)
+* [Enumeration types](enum.html)
 * [Fixed-size binary numbers](fixed-binary.html)
 * [Iterator types and algorithms](iterator.html)
 * [Logging](log.html)
