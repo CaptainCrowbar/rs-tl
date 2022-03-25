@@ -111,7 +111,7 @@ namespace RS::TL {
                     int g = rgb_dist(rng);
                     int b = rgb_dist(rng);
                     int index = 36 * r + 6 * g + b + 16;
-                    return "\x1b[48;5;" + std::to_string(index) + 'm';
+                    return "\x1b[38;5;" + std::to_string(index) + 'm';
                 }();
 
                 message += prefix;
