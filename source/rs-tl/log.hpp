@@ -159,6 +159,6 @@ namespace RS::TL {
         Detail::log_helper(nullptr, nullptr, -1, args...);
     }
 
-    #define RS_LOGX(...) Detail::log_helper(__FILE__, __func__, __LINE__, __VA_ARGS__);
-
 }
+
+#define RS_LOGX(...) RS::TL::Detail::log_helper(__FILE__, __func__, __LINE__, __VA_ARGS__);
