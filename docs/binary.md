@@ -89,3 +89,17 @@ template <typename T> constexpr T rotr(T t, int n) noexcept;
 Rotate the bits in the value left or right. The shift count can be arbitrarily
 large, it is not restricted by the size of the argument. A negative shift
 count will rotate in the opposite direction.
+
+## Overflow detection
+
+```c++
+template <typename T>
+    constexpr std::optional<T> checked_add(T x, T y) noexcept;
+template <typename T>
+    constexpr std::optional<T> checked_subtract(T x, T y) noexcept;
+```
+
+These perform integer addition and subtraction with overflow detection. They
+return the sum or difference if the operation is valid, or an empty value if
+overflow or underflow occurs. These will compile only for primitive integer
+types.

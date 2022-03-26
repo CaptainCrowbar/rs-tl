@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstring>
+#include <limits>
+#include <optional>
 #include <type_traits>
 
 namespace RS::TL {
@@ -179,6 +181,36 @@ namespace RS::TL {
     constexpr T rotr(T t, int n) noexcept {
         static_assert(std::is_integral_v<T>);
         return n == 0 ? t : n < 0 ? Detail::rotl_helper(t, - n) : Detail::rotr_helper(t, n);
+    }
+
+    // Overflow detection
+
+    template <typename T>
+    constexpr std::optional<T> checked_add(T x, T y) noexcept {
+        static_assert(std::is_integral_v<T>);
+        using limits = std::numeric_limits<T>;
+        if (x > 0 && y > limits::max() - x)
+            return {};
+        if constexpr (std::is_signed_v<T>)
+            if (x < 0 && y < limits::min() - x)
+                return {};
+        return x + y;
+    }
+
+    template <typename T>
+    constexpr std::optional<T> checked_subtract(T x, T y) noexcept {
+        static_assert(std::is_integral_v<T>);
+        using limits = std::numeric_limits<T>;
+        if constexpr (std::is_signed_v<T>) {
+            if (y != limits::min())
+                return checked_add(x, T(- y));
+            else if (x <= 0)
+                return {};
+        } else {
+            if (x < y)
+                return {};
+        }
+        return x - y;
     }
 
 }

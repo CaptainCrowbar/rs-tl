@@ -1,5 +1,6 @@
 #include "rs-tl/binary.hpp"
 #include "rs-unit-test.hpp"
+#include <optional>
 
 using namespace RS::TL;
 
@@ -211,5 +212,67 @@ void test_rs_tl_binary_birwise_operations() {
     TEST_EQUAL(rotl(y, -56), 0x3456'7812ul);  TEST_EQUAL(rotr(y, -56), 0x7812'3456ul);
     TEST_EQUAL(rotl(y, -60), 0x2345'6781ul);  TEST_EQUAL(rotr(y, -60), 0x8123'4567ul);
     TEST_EQUAL(rotl(y, -64), 0x1234'5678ul);  TEST_EQUAL(rotr(y, -64), 0x1234'5678ul);
+
+}
+
+void test_rs_tl_binary_signed_overflow_detection() {
+
+    int16_t x = 0, y = 0;
+    std::optional<int16_t> z;
+
+    x = 32'000;   y = 766;      TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'766);
+    x = 32'000;   y = 767;      TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'767);
+    x = 32'000;   y = 768;      TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 32'000;   y = 769;      TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 766;      y = 32'000;   TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'766);
+    x = 767;      y = 32'000;   TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'767);
+    x = 768;      y = 32'000;   TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 769;      y = 32'000;   TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -32'000;  y = -767;     TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'767);
+    x = -32'000;  y = -768;     TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'768);
+    x = -32'000;  y = -769;     TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -32'000;  y = -770;     TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -767;     y = -32'000;  TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'767);
+    x = -768;     y = -32'000;  TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'768);
+    x = -769;     y = -32'000;  TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -770;     y = -32'000;  TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+
+    x = 32'000;   y = -766;     TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'766);
+    x = 32'000;   y = -767;     TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'767);
+    x = 32'000;   y = -768;     TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 32'000;   y = -769;     TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 766;      y = -32'000;  TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'766);
+    x = 767;      y = -32'000;  TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 32'767);
+    x = 768;      y = -32'000;  TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 769;      y = -32'000;  TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -32'000;  y = 767;      TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'767);
+    x = -32'000;  y = 768;      TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'768);
+    x = -32'000;  y = 769;      TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -32'000;  y = 770;      TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -767;     y = 32'000;   TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'767);
+    x = -768;     y = 32'000;   TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), -32'768);
+    x = -769;     y = 32'000;   TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = -770;     y = 32'000;   TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+
+}
+
+void test_rs_tl_binary_unsigned_overflow_detection() {
+
+    uint16_t x = 0, y = 0;
+    std::optional<uint16_t> z;
+
+    x = 65'000;  y = 534;     TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 65'534);
+    x = 65'000;  y = 535;     TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 65'535);
+    x = 65'000;  y = 536;     TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 65'000;  y = 537;     TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 534;     y = 65'000;  TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 65'534);
+    x = 535;     y = 65'000;  TRY(z = checked_add(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 65'535);
+    x = 536;     y = 65'000;  TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 537;     y = 65'000;  TRY(z = checked_add(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+
+    x = 5;  y = 4;  TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 1);
+    x = 5;  y = 5;  TRY(z = checked_subtract(x, y));  TEST(z.has_value());    TEST_EQUAL(z.value(), 0);
+    x = 5;  y = 6;  TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
+    x = 5;  y = 7;  TRY(z = checked_subtract(x, y));  TEST(! z.has_value());  TEST_EQUAL(z.value_or(999), 999);
 
 }

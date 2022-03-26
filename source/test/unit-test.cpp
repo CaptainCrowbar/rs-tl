@@ -73,6 +73,8 @@ int main(int argc, char** argv) {
     // binary-test.cpp
     UNIT_TEST(rs_tl_binary_byte_order)
     UNIT_TEST(rs_tl_binary_birwise_operations)
+    UNIT_TEST(rs_tl_binary_signed_overflow_detection)
+    UNIT_TEST(rs_tl_binary_unsigned_overflow_detection)
 
     // fixed-binary-small-binary-5-test.cpp
     UNIT_TEST(rs_tl_fixed_binary_small_binary_5)
