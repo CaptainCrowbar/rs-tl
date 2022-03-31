@@ -17,7 +17,7 @@ metaprogramming utilities.
 This is a headers-only library. The CMake file includes an `install` target to
 copy the headers into `/usr/local/include` or the equivalent. Headers can be
 included individually as required, or the entire library can be included
-using `"rs-skeleton.hpp"`.
+using `"rs-tl.hpp"`.
 
 [My unit test library](https://github.com/CaptainCrowbar/rs-unit-test) is used
 for this library's unit tests.
