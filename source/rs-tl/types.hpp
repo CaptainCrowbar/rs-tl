@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rs-tl/types.hpp"
+#include <cstdlib>
 #include <iterator>
 #include <string>
 #include <type_traits>
@@ -68,6 +69,15 @@ namespace RS::TL {
     // Constants
 
     constexpr size_t npos = std::string::npos;
+
+    // Memory management types
+
+    struct FreeMem {
+        void operator()(void* ptr) const {
+            if (ptr != nullptr)
+                std::free(ptr);
+        }
+    };
 
     // Mixin classes
 

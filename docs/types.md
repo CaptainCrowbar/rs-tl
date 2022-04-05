@@ -20,6 +20,16 @@ constexpr size_t npos = std::string::npos;
 
 Imported for convenience.
 
+# Memory management types
+
+```c++
+struct FreeMem {
+    void operator()(void* ptr) const;
+};
+```
+
+A deleter (suitable for use with smart pointers) that calls `std::free()`.
+
 ## Mixin classes
 
 These are intended to be used as base classes, following the well known CRTP
