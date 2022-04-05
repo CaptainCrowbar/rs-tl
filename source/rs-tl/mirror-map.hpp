@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rs-tl/iterator.hpp"
+#include "rs-tl/types.hpp"
 #include <algorithm>
 #include <functional>
 #include <initializer_list>

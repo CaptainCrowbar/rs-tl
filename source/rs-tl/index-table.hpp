@@ -2,6 +2,7 @@
 
 #include "rs-tl/guard.hpp"
 #include "rs-tl/iterator.hpp"
+#include "rs-tl/types.hpp"
 #include <functional>
 #include <iterator>
 #include <list>
