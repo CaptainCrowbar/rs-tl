@@ -34,6 +34,7 @@ for this library's unit tests.
 * [Metaprogramming utilities](meta.html)
 * [Scope guards](guard.html)
 * [Thread](thread.html)
+* [Timing](time.html)
 * [UUID](uuid.html)
 * Containers
     * [Bounded array on the stack](bounded-array.html)

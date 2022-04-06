@@ -14,6 +14,7 @@
 #include "rs-tl/mirror-map.hpp"
 #include "rs-tl/stack.hpp"
 #include "rs-tl/thread.hpp"
+#include "rs-tl/time.hpp"
 #include "rs-tl/topological-order.hpp"
 #include "rs-tl/types.hpp"
 #include "rs-tl/uuid.hpp"

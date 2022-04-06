@@ -137,6 +137,12 @@ int main(int argc, char** argv) {
     // stack-test.cpp
     UNIT_TEST(rs_tl_stack)
 
+    // thread-test.cpp
+    UNIT_TEST(rs_tl_thread)
+
+    // time-test.cpp
+    UNIT_TEST(rs_tl_time_waiter)
+
     // topological-order-test.cpp
     UNIT_TEST(rs_tl_topological_order)
     UNIT_TEST(rs_tl_topological_order_reverse)
