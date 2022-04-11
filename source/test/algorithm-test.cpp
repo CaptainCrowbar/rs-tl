@@ -1,5 +1,6 @@
 #include "rs-tl/algorithm.hpp"
 #include "rs-unit-test.hpp"
+#include <algorithm>
 #include <functional>
 #include <iterator>
 #include <string>
@@ -155,5 +156,118 @@ void test_rs_tl_algorithm_edit_distance() {
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 4),  16);
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 5),  20);
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 6),  20);
+
+}
+
+void test_rs_tl_algorithm_subsets() {
+
+    std::string s = "abcde";
+    std::vector<std::string> v;
+
+    TRY(v = subsets(s));
+    TEST_EQUAL(v.size(), 32u);
+    REQUIRE(v.size() == 32u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "");
+    TEST_EQUAL(v[1], "a");
+    TEST_EQUAL(v[2], "ab");
+    TEST_EQUAL(v[3], "abc");
+    TEST_EQUAL(v[4], "abcd");
+    TEST_EQUAL(v[5], "abcde");
+    TEST_EQUAL(v[6], "abce");
+    TEST_EQUAL(v[7], "abd");
+    TEST_EQUAL(v[8], "abde");
+    TEST_EQUAL(v[9], "abe");
+    TEST_EQUAL(v[10], "ac");
+    TEST_EQUAL(v[11], "acd");
+    TEST_EQUAL(v[12], "acde");
+    TEST_EQUAL(v[13], "ace");
+    TEST_EQUAL(v[14], "ad");
+    TEST_EQUAL(v[15], "ade");
+    TEST_EQUAL(v[16], "ae");
+    TEST_EQUAL(v[17], "b");
+    TEST_EQUAL(v[18], "bc");
+    TEST_EQUAL(v[19], "bcd");
+    TEST_EQUAL(v[20], "bcde");
+    TEST_EQUAL(v[21], "bce");
+    TEST_EQUAL(v[22], "bd");
+    TEST_EQUAL(v[23], "bde");
+    TEST_EQUAL(v[24], "be");
+    TEST_EQUAL(v[25], "c");
+    TEST_EQUAL(v[26], "cd");
+    TEST_EQUAL(v[27], "cde");
+    TEST_EQUAL(v[28], "ce");
+    TEST_EQUAL(v[29], "d");
+    TEST_EQUAL(v[30], "de");
+    TEST_EQUAL(v[31], "e");
+
+    TRY(v = subsets(s, 0));
+    TEST_EQUAL(v.size(), 1u);
+    REQUIRE(v.size() == 1u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "");
+
+    TRY(v = subsets(s, 1));
+    TEST_EQUAL(v.size(), 5u);
+    REQUIRE(v.size() == 5u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "a");
+    TEST_EQUAL(v[1], "b");
+    TEST_EQUAL(v[2], "c");
+    TEST_EQUAL(v[3], "d");
+    TEST_EQUAL(v[4], "e");
+
+    TRY(v = subsets(s, 2));
+    TEST_EQUAL(v.size(), 10u);
+    REQUIRE(v.size() == 10u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "ab");
+    TEST_EQUAL(v[1], "ac");
+    TEST_EQUAL(v[2], "ad");
+    TEST_EQUAL(v[3], "ae");
+    TEST_EQUAL(v[4], "bc");
+    TEST_EQUAL(v[5], "bd");
+    TEST_EQUAL(v[6], "be");
+    TEST_EQUAL(v[7], "cd");
+    TEST_EQUAL(v[8], "ce");
+    TEST_EQUAL(v[9], "de");
+
+    TRY(v = subsets(s, 3));
+    TEST_EQUAL(v.size(), 10u);
+    REQUIRE(v.size() == 10u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "abc");
+    TEST_EQUAL(v[1], "abd");
+    TEST_EQUAL(v[2], "abe");
+    TEST_EQUAL(v[3], "acd");
+    TEST_EQUAL(v[4], "ace");
+    TEST_EQUAL(v[5], "ade");
+    TEST_EQUAL(v[6], "bcd");
+    TEST_EQUAL(v[7], "bce");
+    TEST_EQUAL(v[8], "bde");
+    TEST_EQUAL(v[9], "cde");
+
+    TRY(v = subsets(s, 4));
+    TEST_EQUAL(v.size(), 5u);
+    REQUIRE(v.size() == 5u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "abcd");
+    TEST_EQUAL(v[1], "abce");
+    TEST_EQUAL(v[2], "abde");
+    TEST_EQUAL(v[3], "acde");
+    TEST_EQUAL(v[4], "bcde");
+
+    TRY(v = subsets(s, 5));
+    TEST_EQUAL(v.size(), 1u);
+    REQUIRE(v.size() == 1u);
+    std::sort(v.begin(), v.end());
+
+    TEST_EQUAL(v[0], "abcde");
 
 }

@@ -235,4 +235,85 @@ namespace RS::TL {
         return edit_distance(range1, range2, 1, 1, 1);
     }
 
+    // Subsets
+
+    namespace Detail {
+
+        class Bitset {
+        public:
+            Bitset() = default;
+            explicit Bitset(size_t bits): words_((bits + 63) / 64, 0) {}
+            void operator++() noexcept {
+                for (auto& word: words_)
+                    if (++word != 0)
+                        break;
+            }
+            bool operator[](size_t index) const noexcept {
+                return ((words_[index / 64] >> (index % 64)) & size_t(1)) == 1;
+            }
+        private:
+            std::vector<uint64_t> words_; // little endian
+        };
+
+    }
+
+    template <typename RandomAccessContainer>
+    std::vector<RandomAccessContainer> subsets(const RandomAccessContainer& con) {
+
+        std::vector<RandomAccessContainer> subs;
+        RandomAccessContainer sub;
+        Detail::Bitset bits(con.size());
+        size_t n = con.size();
+
+        for (;;) {
+            sub.clear();
+            for (size_t i = 0; i < n; ++i)
+                if (bits[i])
+                    sub.insert(sub.end(), con[i]);
+            subs.push_back(sub);
+            if (sub.size() == n)
+                break;
+            ++bits;
+        }
+
+        return subs;
+
+    }
+
+    template <typename RandomAccessContainer>
+    std::vector<RandomAccessContainer> subsets(const RandomAccessContainer& con, int k) {
+
+        std::vector<RandomAccessContainer> subs;
+        RandomAccessContainer sub(k, {});
+        std::vector<int> indices(k);
+        std::iota(indices.begin(), indices.end(), 0);
+        int n = int(con.size());
+
+        for (;;) {
+
+            std::transform(indices.begin(), indices.end(), sub.begin(),
+                [&con] (int i) { return con[i]; });
+            subs.push_back(sub);
+            int stop = n;
+            int i;
+
+            for (i = k - 1; i >= 0; --i, --stop) {
+                ++indices[i];
+                if (indices[i] < stop)
+                    break;
+            }
+
+            if (i < 0)
+                break;
+
+            for (++i; i < k; ++i)
+                indices[i] = indices[i - 1] + 1;
+
+        }
+
+        return subs;
+
+    }
+
+
 }

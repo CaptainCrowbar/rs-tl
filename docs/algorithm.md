@@ -38,9 +38,7 @@ by removing equivalent elements from the container; like `std::sort()`, its
 predicate has less-than semantics, where that of `unique_in()`, like
 `std::unique()`, has equality semantics.
 
-## Other algorithms
-
-### Difference
+## Difference
 
 ```c++
 template <typename RandomAccessRange> struct DiffEntry {
@@ -73,10 +71,10 @@ have been removed, and the `ins` member is a subrange of `rhs` indicating
 which elements have been inserted in the same location. At least one subrange
 in each diff entry will be non-empty.
 
-Complexity: `O((m+n)*k)`, where `m` and `n` are the lengths of the input
-ranges and `k` is the number of differences.
+Complexity: _O(k(m+n))_, where _m_ and _n_ are the lengths of the input ranges
+and _k_ is the number of differences.
 
-### Edit distance
+## Edit distance
 
 ```c++
 template <typename ForwardRange1, typename ForwardRange2>
@@ -94,4 +92,24 @@ weight of 1; optionally, explicit weights can be given to each operation. The
 weight type `T` must be an arithmetic type. Behaviour is undefined if any of
 the weights are negative.
 
-Complexity: `O(m*n)`, where `m` and `n` are the lengths of the input ranges.
+Complexity: _O(mn)_, where _m_ and _n_ are the lengths of the input ranges.
+
+## Subsets
+
+```c++
+template <typename RandomAccessContainer> std::vector<RandomAccessContainer>
+    subsets(const RandomAccessContainer& con);
+template <typename RandomAccessContainer> std::vector<RandomAccessContainer>
+    subsets(const RandomAccessContainer& con, int k);
+```
+
+Return a list of all subsets of the container, or all subsets of a given size.
+Container elements are always treated as distinct, with no equality checking,
+so these will always return exactly _2<sup>n</sup>_ or _C(n,k)=n!/k!(n-k)!_
+subsets (where _n_ is the container size).
+
+No promises are made about what order the subsets will be listed in. For the
+second function, behaviour is undefined if `k<0` or `k>n`.
+
+Complexity: _O(2<sup>n</sup>)_ for the first version; _O(kC(n,k))_ for the
+second.
