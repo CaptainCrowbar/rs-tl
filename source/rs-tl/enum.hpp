@@ -9,19 +9,23 @@
 #define RS_DEFINE_ENUM_IMPL_(EnumType, enum_class, IntType, first_value, first_name, ...) \
     enum enum_class EnumType: IntType { \
         first_name = first_value, \
+        __VA_ARGS__ \
+    }; \
+    enum class RS_ ## EnumType ## _shadow_: IntType { \
+        first_name = first_value, \
         __VA_ARGS__, \
         RS_ ## EnumType ##_sentinel_ \
     }; \
     [[maybe_unused]] constexpr IntType count_enum_values(EnumType) noexcept { \
         constexpr auto f = static_cast<IntType>(first_value); \
-        constexpr auto s = static_cast<IntType>(EnumType::RS_ ## EnumType ##_sentinel_); \
+        constexpr auto s = static_cast<IntType>(RS_ ## EnumType ## _shadow_::RS_ ## EnumType ##_sentinel_); \
         return s - f; \
     } \
     [[maybe_unused]] constexpr EnumType min_enum_value(EnumType) noexcept { \
         return EnumType(first_value); \
     } \
     [[maybe_unused]] constexpr EnumType max_enum_value(EnumType) noexcept { \
-        constexpr auto s = static_cast<IntType>(EnumType::RS_ ## EnumType ##_sentinel_); \
+        constexpr auto s = static_cast<IntType>(RS_ ## EnumType ## _shadow_::RS_ ## EnumType ##_sentinel_); \
         return EnumType(s - 1); \
     } \
     [[maybe_unused]] inline const std::vector<std::string>& list_enum_names(EnumType) { \
