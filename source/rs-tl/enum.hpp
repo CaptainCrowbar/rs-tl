@@ -9,8 +9,21 @@
 #define RS_DEFINE_ENUM_IMPL_(EnumType, enum_class, IntType, first_value, first_name, ...) \
     enum enum_class EnumType: IntType { \
         first_name = first_value, \
-        __VA_ARGS__ \
+        __VA_ARGS__, \
+        RS_ ## EnumType ##_sentinel_ \
     }; \
+    [[maybe_unused]] constexpr IntType count_enum_values(EnumType) noexcept { \
+        constexpr auto f = static_cast<IntType>(first_value); \
+        constexpr auto s = static_cast<IntType>(EnumType::RS_ ## EnumType ##_sentinel_); \
+        return s - f; \
+    } \
+    [[maybe_unused]] constexpr EnumType min_enum_value(EnumType) noexcept { \
+        return EnumType(first_value); \
+    } \
+    [[maybe_unused]] constexpr EnumType max_enum_value(EnumType) noexcept { \
+        constexpr auto s = static_cast<IntType>(EnumType::RS_ ## EnumType ##_sentinel_); \
+        return EnumType(s - 1); \
+    } \
     [[maybe_unused]] inline const std::vector<std::string>& list_enum_names(EnumType) { \
         static const auto names = [] { \
             std::string all = # first_name "," # __VA_ARGS__; \
@@ -29,11 +42,11 @@
     } \
     [[maybe_unused]] inline const std::vector<EnumType>& list_enum_values(EnumType) { \
         static const auto values = [] { \
-            enum class dummy_enum { first_name, __VA_ARGS__, RS_sentinel_ }; \
-            auto n = int(dummy_enum::RS_sentinel_); \
-            std::vector<EnumType> vec(size_t(n), EnumType(first_value)); \
-            for (int i = 0; i < n; ++i) \
-                vec[i] = EnumType(first_value + i); \
+            constexpr auto f = static_cast<IntType>(first_value); \
+            constexpr auto n = count_enum_values(EnumType()); \
+            std::vector<EnumType> vec(size_t(n), {}); \
+            for (IntType i = 0; i < n; ++i) \
+                vec[i] = EnumType(i + f); \
             return vec; \
         }(); \
         return values; \

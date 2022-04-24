@@ -4,8 +4,8 @@
 #include <type_traits>
 #include <vector>
 
-RS_DEFINE_ENUM(Etype, uint32_t, 1, alpha, bravo, charlie)
-RS_DEFINE_ENUM_CLASS(Eclass, int64_t, -1, xray, yankee, zulu)
+RS_DEFINE_ENUM(Etype, unsigned, 1, alpha, bravo, charlie)
+RS_DEFINE_ENUM_CLASS(Eclass, long long, -1, xray, yankee, zulu)
 
 void test_rs_format_enum_definition() {
 
@@ -18,15 +18,20 @@ void test_rs_format_enum_definition() {
     TEST(std::is_enum_v<Etype>);
     TEST(std::is_enum_v<Eclass>);
 
-    TEST_TYPE(std::underlying_type_t<Etype>, uint32_t);
-    TEST_TYPE(std::underlying_type_t<Eclass>, int64_t);
+    TEST_TYPE(std::underlying_type_t<Etype>, unsigned);
+    TEST_TYPE(std::underlying_type_t<Eclass>, long long);
 
-    TEST_EQUAL(uint32_t(alpha),          1u);
-    TEST_EQUAL(uint32_t(bravo),          2u);
-    TEST_EQUAL(uint32_t(charlie),        3u);
-    TEST_EQUAL(int64_t(Eclass::xray),    -1);
-    TEST_EQUAL(int64_t(Eclass::yankee),  0);
-    TEST_EQUAL(int64_t(Eclass::zulu),    1);
+    TEST_EQUAL(int(alpha),           1);
+    TEST_EQUAL(int(bravo),           2);
+    TEST_EQUAL(int(charlie),         3);
+    TEST_EQUAL(int(Eclass::xray),    -1);
+    TEST_EQUAL(int(Eclass::yankee),  0);
+    TEST_EQUAL(int(Eclass::zulu),    1);
+
+    TEST_EQUAL(min_enum_value(Etype()), alpha);          TEST_EQUAL(int(min_enum_value(Etype())), 1);
+    TEST_EQUAL(max_enum_value(Etype()), charlie);        TEST_EQUAL(int(max_enum_value(Etype())), 3);
+    TEST_EQUAL(min_enum_value(Eclass()), Eclass::xray);  TEST_EQUAL(int(min_enum_value(Eclass())), -1);
+    TEST_EQUAL(max_enum_value(Eclass()), Eclass::zulu);  TEST_EQUAL(int(max_enum_value(Eclass())), 1);
 
     TRY(names = list_enum_names(Etype()));
     TEST_EQUAL(RS::UnitTest::format_range(names), "[alpha,bravo,charlie]");

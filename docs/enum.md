@@ -50,33 +50,27 @@ enum class MyEnumClass: int {
 In addition to defining the enumeration itself, the macros also define the
 following functions:
 
-```c++
-std::vector<std::string> list_enum_names(EnumType);
-std::vector<EnumType> list_enum_values(EnumType);
-```
-
-Return a list of the enumeration constants or their names. The argument's
-value is ignored; a function argument is used to specify the type, instead of
-a template argument, so this function can be found by argument dependent
-lookup.
-
-```c++
-bool parse_enum(const std::string& str, EnumType& t);
-```
-
-If the string matches one of the enumeration names, this sets `t` to the
-corresponding value and returns true; otherwise, it leaves `t` unchanged and
-returns false.
-
-```c++
-std::string to_string(EnumType t);
-std::ostream& operator<<(std::ostream& out, EnumType t);
-```
-
-These convert an enumeration value to a string containing its unqualified
-name. If an argument is supplied that does not correspond to a named
-enumeration constant, they will call `std::to_string()` on its integer
-value.
+* `constexpr IntType count_enum_values(EnumType) noexcept`
+    * Returns the number of values in the enumeration. (The argument's value
+      is ignored; a function argument is used to specify the type, instead of
+      a template argument, so these functions can be found by argument
+      dependent lookup.)
+* `constexpr EnumType min_enum_value(EnumType) noexcept`
+* `constexpr EnumType max_enum_value(EnumType) noexcept`
+    * Return the minimum and maximum values of the enumeration.
+* `std::vector<std::string> list_enum_names(EnumType)`
+* `std::vector<EnumType> list_enum_values(EnumType)`
+    * Return a list of the enumeration constants or their names.
+* `bool parse_enum(const std::string& str, EnumType& t)`
+    * If the string matches one of the enumeration names, this sets `t` to the
+      corresponding value and returns true; otherwise, it leaves `t`
+      unchanged and returns false.
+* `std::string to_string(EnumType t)`
+* `std::ostream& operator<<(std::ostream& out, EnumType t)`
+    * These convert an enumeration value to a string containing its
+      unqualified name. If an argument is supplied that does not correspond
+      to a named enumeration constant, they will call `std::to_string()` on
+      its integer value.
 
 ## Bitmask operators
 
