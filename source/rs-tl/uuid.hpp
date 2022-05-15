@@ -11,7 +11,7 @@ namespace RS::TL {
 
     namespace Detail {
 
-        inline uint32_t bernstein_hash(const void* ptr, size_t len) noexcept {
+        constexpr uint32_t bernstein_hash(const void* ptr, size_t len) noexcept {
             auto bptr = static_cast<const uint8_t*>(ptr);
             uint32_t h = 5381;
             for (size_t i = 0; i < len; ++i)

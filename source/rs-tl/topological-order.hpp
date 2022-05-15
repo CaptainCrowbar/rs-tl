@@ -120,8 +120,8 @@ namespace RS::TL {
 
     private:
 
-        friend std::string Detail::format_by_node(const TopologicalOrder& topo);
-        friend std::string Detail::format_by_set(const TopologicalOrder& topo);
+        friend std::string Detail::format_by_node<>(const TopologicalOrder& topo);
+        friend std::string Detail::format_by_set<>(const TopologicalOrder& topo);
 
         using set_type = std::set<T, Compare>;
 

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <ostream>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #define RS_DEFINE_ENUM_IMPL_(EnumType, enum_class, IntType, first_value, first_name, ...) \
@@ -65,9 +66,9 @@
     } \
     [[maybe_unused]] inline std::string to_string(EnumType t) { \
         auto& names = list_enum_names(EnumType()); \
-        IntType index = static_cast<IntType>(t) - static_cast<IntType>(first_value); \
-        if (index >= 0 && index < static_cast<IntType>(names.size())) \
-            return names[size_t(index)]; \
+        auto index = uintmax_t(t) - uintmax_t(first_value); \
+        if (index < names.size()) \
+            return names[index]; \
         else \
             return std::to_string(static_cast<IntType>(t)); \
     } \
