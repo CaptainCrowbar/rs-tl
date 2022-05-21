@@ -104,7 +104,7 @@ namespace RS::TL {
 
                 static thread_local std::string prefix = [] {
                     auto id = std::this_thread::get_id();
-                    auto seed = std::hash<std::thread::id>()(id);
+                    auto seed = uint32_t(std::hash<std::thread::id>()(id));
                     std::minstd_rand rng(seed);
                     std::uniform_int_distribution<int> rgb_dist(1, 4);
                     int r = rgb_dist(rng);

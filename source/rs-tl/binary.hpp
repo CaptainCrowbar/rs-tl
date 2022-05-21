@@ -195,7 +195,7 @@ namespace RS::TL {
         if constexpr (std::is_signed_v<T>)
             if (x < 0 && y < limits::min() - x)
                 return {};
-        return x + y;
+        return T(x + y);
     }
 
     template <typename T>
@@ -211,7 +211,7 @@ namespace RS::TL {
             if (x < y)
                 return {};
         }
-        return x - y;
+        return T(x - y);
     }
 
 }

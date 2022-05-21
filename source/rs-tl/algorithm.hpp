@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include <numeric>
 #include <type_traits>
 #include <vector>
 

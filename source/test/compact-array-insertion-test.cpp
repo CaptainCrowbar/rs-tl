@@ -9,14 +9,14 @@ using namespace RS::UnitTest;
 
 namespace {
 
-    std::string repeat_string(const std::string& str, int n, const std::string& delimiter) {
+    std::string repeat_string(const std::string& str, size_t n, const std::string& delimiter) {
         if (n == 0)
             return {};
         else if (n == 1)
             return str;
         std::string sd = str + delimiter;
         std::string result;
-        for (int i = 0; i < n; ++i)
+        for (size_t i = 0; i < n; ++i)
             result += sd;
         result.resize(result.size() - delimiter.size());
         return result;

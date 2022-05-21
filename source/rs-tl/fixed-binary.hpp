@@ -53,9 +53,9 @@ namespace RS::TL {
                 return false;
             }
 
-            char max_d = base < 10 ? '0' + base : '9';
-            char max_uc = 'A' + base - 11;
-            char max_lc = max_uc + 32;
+            auto max_d = char(base < 10 ? '0' + base : '9');
+            auto max_uc = char('A' + base - 11);
+            auto max_lc = char(max_uc + 32);
             int digit = 0;
             T result;
             T tbase = T(uint64_t(base));
