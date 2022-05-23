@@ -15,14 +15,6 @@ namespace RS::TL;
 ## Byte order
 
 ```c++
-constexpr bool big_endian_target;
-constexpr bool little_endian_target;
-```
-
-One of these will be true and the other false, reflecting the target system's
-byte order.
-
-```c++
 template <typename T> constexpr T swap_ends(T t) noexcept;
 ```
 

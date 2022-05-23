@@ -10,14 +10,6 @@ namespace RS::TL {
 
     // Byte order
 
-    #if ! defined(_WIN32) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-        constexpr bool big_endian_target = true;
-    #else
-        constexpr bool big_endian_target = false;
-    #endif
-
-    constexpr bool little_endian_target = ! big_endian_target;
-
     template <typename T>
     constexpr T swap_ends(T t, size_t N = sizeof(T)) noexcept {
         static_assert(std::is_scalar_v<T>);
