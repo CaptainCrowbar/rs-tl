@@ -69,6 +69,7 @@ int main(int argc, char** argv) {
     UNIT_TEST(rs_tl_algorithm_container_algorithms)
     UNIT_TEST(rs_tl_algorithm_diff)
     UNIT_TEST(rs_tl_algorithm_edit_distance)
+    UNIT_TEST(rs_tl_algorithm_hash_compare)
     UNIT_TEST(rs_tl_algorithm_subsets)
 
     // binary-test.cpp

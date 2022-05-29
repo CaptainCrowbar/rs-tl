@@ -2,11 +2,15 @@
 #include "rs-unit-test.hpp"
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <iterator>
+#include <random>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 using namespace RS::TL;
+using namespace RS::UnitTest;
 using namespace std::literals;
 
 void test_rs_tl_algorithm_container_algorithms() {
@@ -156,6 +160,97 @@ void test_rs_tl_algorithm_edit_distance() {
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 4),  16);
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 5),  20);
     TEST_EQUAL(edit_distance("Hello"s,  "World"s,   3, 2, 6),  20);
+
+}
+
+namespace {
+
+    class FakeHash {
+    public:
+        explicit FakeHash(size_t seed): seed_(seed) {}
+        size_t operator()(const std::string& s) const noexcept {
+            size_t h = seed_;
+            for (char c: s)
+                h += uint8_t(c);
+            return h;
+        }
+    private:
+        size_t seed_;
+    };
+
+}
+
+void test_rs_tl_algorithm_hash_compare() {
+
+    using string_set = std::unordered_set<std::string, FakeHash>;
+    using string_list = std::vector<std::string>;
+
+    static constexpr size_t n_strings = 25;
+    static constexpr size_t n_hashes = 1000;
+    static constexpr size_t n_samples = 4;
+    static constexpr double p_equal = 0.1;
+
+    std::minstd_rand rng(42);
+    std::bernoulli_distribution select_equal(p_equal);
+
+    for (size_t n = 1; n <= n_strings; ++n) {
+
+        string_list all_strings;
+
+        for (size_t i = 1; i <= n; ++i) {
+            char c = char('a' + i - 1);
+            std::string s(3, c);
+            s += std::to_string(i);
+            all_strings.push_back(s);
+        }
+
+        for (uint32_t seed = 0; seed < n_hashes; ++seed) {
+
+            FakeHash hash1(seed);
+            FakeHash hash2(seed + n_hashes);
+
+            for (size_t sample = 1; sample <= n_samples; ++sample) {
+
+                double fraction = double(sample) / double(n_samples);
+                std::bernoulli_distribution select_sample(fraction);
+                bool same = select_equal(rng);
+                string_set set1(0, hash1);
+                string_set set2(0, hash2);
+                string_list vec1, vec2;
+
+                for (auto& s: all_strings) {
+                    bool accept1 = select_sample(rng);
+                    bool accept2 = same ? accept1 : select_sample(rng);
+                    if (accept1) {
+                        set1.insert(s);
+                        vec1.push_back(s);
+                    }
+                    if (accept2) {
+                        set2.insert(s);
+                        vec2.push_back(s);
+                    }
+                }
+
+                int set_compare = hash_compare(set1, set2);
+                int vec_compare = vec1 == vec2 ? 0 : vec1 < vec2 ? -1 : 1;
+
+                if (set_compare != vec_compare) {
+                    std::cout
+                        << "Failed hash_compare():\n"
+                        << "    vec1 = " << format_range(vec1) << "\n"
+                        << "    vec2 = " << format_range(vec2) << "\n"
+                        << "    set1 = " << format_range(set1) << "\n"
+                        << "    set2 = " << format_range(set2) << "\n"
+                        << "    vec_compare = " << vec_compare << "\n"
+                        << "    set_compare = " << set_compare << "\n";
+                    return;
+                }
+
+            }
+
+        }
+
+    }
 
 }
 

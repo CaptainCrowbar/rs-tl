@@ -6,7 +6,9 @@
 #include <functional>
 #include <iterator>
 #include <numeric>
+#include <optional>
 #include <type_traits>
+#include <unordered_set>
 #include <vector>
 
 namespace RS::TL {
@@ -234,6 +236,41 @@ namespace RS::TL {
     template <typename ForwardRange1, typename ForwardRange2>
     int edit_distance(const ForwardRange1& range1, const ForwardRange2& range2) {
         return edit_distance(range1, range2, 1, 1, 1);
+    }
+
+    // Hash table comparison
+
+    template <typename T, typename Hash1, typename Hash2, typename Eq, typename Cmp>
+    int hash_compare(const std::unordered_set<T, Hash1, Eq>& a, const std::unordered_set<T, Hash2, Eq>& b, Cmp cmp) {
+        if (a.empty() || b.empty())
+            return int(b.empty()) - int(a.empty());
+        std::optional<T> a_min;   // Least value in a but not in b
+        std::optional<T> b_min;   // Least value in b but not in a
+        std::optional<T> ab_max;  // Greatest value common to both
+        for (auto& key: a) {
+            if (b.count(key) == 0) {
+                if (! a_min || cmp(key, *a_min))
+                    a_min = key;
+            } else if (! ab_max || cmp(*ab_max, key)) {
+                ab_max = key;
+            }
+        }
+        for (auto& key: b)
+            if (a.count(key) == 0 && (! b_min || cmp(key, *b_min)))
+                b_min = key;
+        if (a_min && b_min)
+            return cmp(*a_min, *b_min) ? -1 : 1;
+        else if (a_min)
+            return cmp(*a_min, *ab_max) ? -1 : 1;
+        else if (b_min)
+            return cmp(*ab_max, *b_min) ? -1 : 1;
+        else
+            return 0;
+    }
+
+    template <typename T, typename Hash1, typename Hash2, typename Eq>
+    int hash_compare(const std::unordered_set<T, Hash1, Eq>& a, const std::unordered_set<T, Hash2, Eq>& b) {
+        return hash_compare(a, b, std::less<T>());
     }
 
     // Subsets

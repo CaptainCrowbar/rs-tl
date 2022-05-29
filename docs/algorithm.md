@@ -94,6 +94,27 @@ the weights are negative.
 
 Complexity: _O(mn)_, where _m_ and _n_ are the lengths of the input ranges.
 
+## Hash table comparison
+
+```c++
+template <typename T, typename Hash1, typename Hash2, typename Eq>
+    int hash_compare(const std::unordered_set<T, Hash1, Eq>& a,
+        const std::unordered_set<T, Hash2, Eq>& b);
+template <typename T, typename Hash1, typename Hash2, typename Eq,
+        typename Cmp>
+    int hash_compare(const std::unordered_set<T, Hash1, Eq>& a,
+        const std::unordered_set<T, Hash2, Eq>& b, Cmp cmp);
+```
+
+Performs a three-way comparison between hash sets, returning -1 if _a&lt;b,_ 0
+if _a=b,_ or 1 if _a&gt;b._ This always gives the same result as if the sets
+were sorted, even if the two sets are in different orders or have different
+hash functions. The comparison predicate defaults to `std::less<T>`. Behaviour
+is undefined if the equality predicates are different, or are inconsistent
+with the comparison predicate.
+
+Complexity: _O(n)_.
+
 ## Subsets
 
 ```c++
