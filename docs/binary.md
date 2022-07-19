@@ -42,7 +42,9 @@ or there is not enough space in the array being read or written.
 
 ## Bitwise operations
 
-All of these functions are defined only for integer types.
+All of these functions are defined only for integer types. Unless the
+description says otherwise, behaviour is undefined if the argument is
+negative.
 
 ```c++
 template <typename T> constexpr int popcount(T t) noexcept;
